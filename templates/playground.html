@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function randomValue(){
+            var randomNumber = Math.floor(Math.random()*15);
+            var start = new Date(2022, 5, 1);
+            var end = new Date();
+            var randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+            return {
+                'timesUsed':randomNumber,
+                'lastUsed':randomDate
+            }
+        }
+        function loadValues(){
+            var returnList = [];
+            for(var a=0;a<100;a++){
+                returnList.push(randomValue());
+            }
+            return returnList;
+        }
+
+
+        const modifier = 1;
+        function compare(a, b){
+            //LARGE number means HIGH on the list
+            var plusA = (a.timesUsed%2==1) ? modifier : 0;
+            var plusB = (b.timesUsed%2==1) ? modifier : 0;
+
+            var aDateDifference = parseInt((new Date() - a.lastUsed) / (1000 * 60 * 60 * 24), 10);
+            var bDateDifference = parseInt((new Date() - b.lastUsed) / (1000 * 60 * 60 * 24), 10);
+
+            var aScore = aDateDifference + plusA - (a.timesUsed * modifier)
+            var bScore = bDateDifference + plusB - (b.timesUsed * modifier)
+
+            return bScore - aScore;
+        }
+
+        function loadObject(){
+            var fullList = loadValues();
+            fullList.sort(compare);
+            var htmlString = "<table>";
+            for(var a=0;a<fullList.length;a++){
+                htmlString+="<tr>";
+                    htmlString+="<td>"+fullList[a].timesUsed+"</td>";
+                    htmlString+="<td>"
+                        htmlString+=fullList[a].lastUsed.getDate()+", "
+                        htmlString+=fullList[a].lastUsed.getMonth()+", "
+                        htmlString+=fullList[a].lastUsed.getFullYear()
+                    htmlString+="</td>";
+                htmlString+="</tr>";
+            }
+            htmlString+="</table>";
+            document.getElementById("output").innerHTML=htmlString;
+        }
+    </script>
+</head>
+<body onload = 'loadObject()'>
+    <div id="output"></div>
+</body>
+</html>

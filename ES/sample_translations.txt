@@ -1,0 +1,1193 @@
+#. extracted from /home/david/Documents/translations/sample_workbench_simplified_translations_07_21_2021.csv
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-21 12:06-0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Natan Roskeli <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.3.6\n"
+
+#: apps.py:9
+msgid "Sample Workbench"
+msgstr ""
+
+#: filters.py:173
+msgid "Will not include any samples linked to company as applicant company."
+msgstr ""
+
+#: filters.py:308+filters.py:334+filters.py:362+forms.py:1756+forms.py:1769
+msgid ""
+"Hold down \"Control\", or \"Command\" on a Mac, to select more than one."
+msgstr ""
+
+#: filters.py:350+models.py:73
+msgid "In Progress"
+msgstr ""
+
+#: filters.py:351+models.py:74
+msgid "Complete"
+msgstr "Completo"
+
+#: forms.py:98
+msgid "Number of Samples"
+msgstr "Numero de "
+
+#: forms.py:198
+msgid "Cannot complete sample until all test order iterations are completed."
+msgstr "No podemos completar este especimen hasta que todos los ordenes de iteration son completos"
+
+#: forms.py:400
+msgid "Unspecified"
+msgstr "未指明的"
+
+#: forms.py:912+forms.py:949
+msgid "CC"
+msgstr "CC"
+
+#: forms.py:1154
+msgid "Show recipient emails"
+msgstr "显示接收邮件"
+
+#: forms.py:1157
+msgid "Show applicant contact person"
+msgstr "显示申请人"
+
+#: forms.py:1178
+msgid "General Info"
+msgstr "常规信息"
+
+#: forms.py:1179
+msgid ""
+"Copies Worksheet Color, Latest Rush, Sample Type, Filling Types, "
+"Description, Label, Sample Attributes, Control Sample, and Finished Product"
+msgstr "复制工作单颜色，最近的加急服务，样品类型，填充类型，描述，标签，样品属性，控制样，和成品"
+
+#: forms.py:1184
+msgid "Delivery Info"
+msgstr "运送信息"
+
+#: forms.py:1185
+msgid "Copies Arrival Date, Arrival Location, Courier, and Air Waybill"
+msgstr "复制收到日期、地点、快递和快递单号"
+
+#: forms.py:1187
+msgid "Shipping Info"
+msgstr "快递信息"
+
+#: forms.py:1188
+msgid "Copies Sample Shipping Items"
+msgstr "复制样品快递"
+
+#: forms.py:1190
+msgid "Marketing Info"
+msgstr "市场营销信息"
+
+#: forms.py:1191
+msgid "Copies Brand, Country of Origin, Destination Country, and Market"
+msgstr "复制品牌，原产国，目的国和市场"
+
+#: forms.py:1193
+msgid "Permit Info"
+msgstr "许可证信息"
+
+#: forms.py:1194
+msgid "Copies URN, Sterilization Permit Number, and RN"
+msgstr "复制URN, 消毒许可证编号，以及RN"
+
+#: forms.py:1196
+msgid "Testing"
+msgstr "测试"
+
+#: forms.py:1197
+msgid ""
+"Copies all Packages, Test Orders, Prerequisite Test Orders, Test Order "
+"Results with empty values, Iterations, Iteration Results with empty values, "
+"Options, Care Instructions, and Evaluation Orders"
+msgstr "复制所有套餐、测试项目、先决条件测试项目、空白数据的测试项目结果，测试分样，空白数据的分样结果，选项，洗标，以及评估项目。"
+
+#: forms.py:1202
+msgid "Sticky Notes"
+msgstr "即时备注"
+
+#: forms.py:1203
+msgid "Copies sticky notes"
+msgstr "复制即时备注"
+
+#: forms.py:1323+forms.py:1340+forms.py:1461
+msgid "Sample does not exist."
+msgstr "样品不存在"
+
+#: forms.py:1336
+msgid "Wrong filetype."
+msgstr "错误的文件类型"
+
+#: forms.py:1482
+msgid "Wrong file type."
+msgstr "错误的文件类型"
+
+#: forms.py:1484
+msgid "Cannot parse this filename format."
+msgstr "无法解析此文件名格式。"
+
+#: forms.py:1549
+msgid "Iteration ID"
+msgstr "测试分样ID"
+
+#: forms.py:1553
+msgid "Recheck ID"
+msgstr "核对ID"
+
+#: forms.py:1585
+msgid "Scan Sample Bar Code"
+msgstr "扫描样品条形码"
+
+#: forms.py:1735
+msgid "Date Range"
+msgstr "日期范围"
+
+#: forms.py:1740+models.py:1914+models.py:3281
+msgid "Analyst"
+msgstr "分析者"
+
+#: forms.py:1748
+msgid "Tests"
+msgstr "测试"
+
+#: forms.py:1761
+msgid "Test Categories"
+msgstr "测试分类"
+
+#: forms.py:1793
+msgid "1. Test Order"
+msgstr "1. 测试项目"
+
+#: forms.py:1801
+msgid "2. Iteration"
+msgstr "2. 测试分样"
+
+#: forms.py:1808
+msgid "3. Iteration Internal Result"
+msgstr "3. 分样内部结果"
+
+#: forms.py:1809
+msgid "4. Old Value"
+msgstr "4. 旧数据"
+
+#: models.py:95
+msgid "Protocol"
+msgstr "协议"
+
+#: models.py:207+models.py:214+models.py:331
+msgid "Sample Order"
+msgstr "样品订单"
+
+#: models.py:208
+msgid "Sample Orders"
+msgstr "样品订单"
+
+#: models.py:218
+msgid "Sample Order Deliverable Recipient"
+msgstr "样品订单接收人"
+
+#: models.py:219
+msgid "Sample Order Deliverable Recipients"
+msgstr "样品订单接收人"
+
+#: models.py:234
+msgid "Sample Order Report"
+msgstr "样品订单报告"
+
+#: models.py:235
+msgid "Sample Order Reports"
+msgstr "样品订单报告"
+
+#: models.py:245+models.py:410
+msgid "Reviewed By"
+msgstr "由_审核"
+
+#: models.py:269
+msgid "Sample Order Confirmation"
+msgstr "样品订单确认函"
+
+#: models.py:270
+msgid "Sample Order Confirmations"
+msgstr "样品订单确认函"
+
+#: models.py:280
+msgid "Accreditation"
+msgstr "认证"
+
+#: models.py:284+models.py:1709
+msgid "Test Orders"
+msgstr "测试项目"
+
+#: models.py:288+models.py:2342
+msgid "Evaluation Orders"
+msgstr "评估项目"
+
+#: models.py:292+models.py:2547
+msgid "Evaluation Comparison Orders"
+msgstr "对比评估项目"
+
+#: models.py:328+models.py:1211+models.py:1397+models.py:2163+models.py:2373+models.py:3170+models.py:3251+models.py:3329+models.py:3344+models.py:3389
+msgid "Sample"
+msgstr "样品"
+
+#: models.py:335
+msgid "Quality Control Order Product"
+msgstr "质量控制样"
+
+#: models.py:340
+msgid "Healthy Down Order"
+msgstr "健康羽绒订单"
+
+#: models.py:346+templates/sample_workbench/report/report_info_page.html:77
+msgid "Sample Type"
+msgstr "样品类型"
+
+#: models.py:348+models.py:3106
+msgid "Description"
+msgstr "描述"
+
+#: models.py:350
+msgid "Further describe sample type, if needed"
+msgstr "如需，更多的样品类型描述"
+
+#: models.py:351
+msgid "Control Sample?"
+msgstr "控制样？"
+
+#: models.py:352
+msgid "Finished Product?"
+msgstr "成品？"
+
+#: models.py:354
+msgid "Filling Label"
+msgstr "填充标签"
+
+#: models.py:355
+msgid "Report Filename Prefix"
+msgstr "报告文件名前缀"
+
+#: models.py:357
+msgid "Refer to protocol notes for instructions."
+msgstr "有关说明请参阅协议说明。"
+
+#: models.py:360+templates/sample_workbench/report/report_info_page.html:91
+msgid "Sample Identification"
+msgstr "样品描述"
+
+#: models.py:361
+msgid "Short Sample Identification"
+msgstr "简短的样品描述"
+
+#: models.py:367
+msgid "Arrival Location"
+msgstr "收到的实验室"
+
+#: models.py:373
+msgid "Courier"
+msgstr "快递公司"
+
+#: models.py:375
+msgid "Air Waybill"
+msgstr "面单"
+
+#: models.py:377
+msgid "Arrived At"
+msgstr "在..收到"
+
+#: models.py:382
+msgid "Made In"
+msgstr "由..生产"
+
+#: models.py:387
+msgid "Country of Origin"
+msgstr "原产国"
+
+#: models.py:392
+msgid "Destination Country"
+msgstr "目的国"
+
+#: models.py:396+models.py:3245
+msgid "Markets"
+msgstr "市场"
+
+#: models.py:399+models.py:3233
+msgid "Brand"
+msgstr "品牌"
+
+#: models.py:401
+msgid "URN (Uniform Registry Number)"
+msgstr "URN"
+
+#: models.py:403
+msgid "Sterilization Permit Number"
+msgstr "消毒许可证编号"
+
+#: models.py:405
+msgid "RN (Registered Identification Number)"
+msgstr "RH"
+
+#: models.py:413
+msgid "Worksheet Color"
+msgstr "工作单颜色"
+
+#: models.py:416
+msgid "Confirmation Note"
+msgstr "确认函备注"
+
+#: models.py:417+models.py:3375
+msgid "Status"
+msgstr "状态"
+
+#: models.py:422+models.py:1523+models.py:1737
+msgid "Completed At"
+msgstr "在..完成"
+
+#: models.py:424
+msgid "Is Return Requested?"
+msgstr "申请退样了吗"
+
+#: models.py:426
+msgid "Is Returned?"
+msgstr "退样了吗"
+
+#: models.py:432
+msgid "Latest Rush"
+msgstr "最近的加急服务"
+
+#: models.py:436
+msgid "Report Badge"
+msgstr "报告徽章"
+
+#: models.py:438
+msgid "Internal Due Date Override"
+msgstr "内部到期时间"
+
+#: models.py:441
+msgid "Filling Types"
+msgstr "填充物类型"
+
+#: models.py:443
+msgid "Report Addendum"
+msgstr "报告附录"
+
+#: models.py:1212
+msgid "Samples"
+msgstr "样品"
+
+#: models.py:1220+models.py:1240+models.py:1290+models.py:1441+models.py:3238+models.py:3362
+msgid "Name"
+msgstr "名字"
+
+#: models.py:1226+models.py:1477+models.py:2166+models.py:2376
+msgid "Sample Section"
+msgstr "样品部分"
+
+#: models.py:1227
+msgid "Sample Sections"
+msgstr "样品部分"
+
+#: models.py:1241+models.py:1443+models.py:1867+models.py:1890+models.py:1955+models.py:2627+models.py:3316
+msgid "Value"
+msgstr "数据"
+
+#: models.py:1242
+msgid "Is Shown On Report?"
+msgstr "显示在报告上吗？"
+
+#: models.py:1246
+msgid "Entered By"
+msgstr "由..输入"
+
+#: models.py:1249
+msgid "Entered At"
+msgstr "在。。输入"
+
+#: models.py:1261
+msgid "Sample Attribute"
+msgstr "样本属性"
+
+#: models.py:1262
+msgid "Sample Attributes"
+msgstr "样本属性"
+
+#: models.py:1271+models.py:3130+models.py:3139
+msgid "Title"
+msgstr "题目"
+
+#: models.py:1272+models.py:3131
+msgid "File"
+msgstr "文件"
+
+#: models.py:1287
+msgid "Code"
+msgstr "代码"
+
+#: models.py:1288
+msgid "Single letter code to be used in filename format."
+msgstr "在文件名格式中使用的单一字母代码。"
+
+#: models.py:1296
+msgid "Sample Picture Type"
+msgstr "样品照片类型"
+
+#: models.py:1297
+msgid "Sample Picture Types"
+msgstr "样品照片类型"
+
+#: models.py:1308
+msgid "Type"
+msgstr "类型"
+
+#: models.py:1310
+msgid "Number"
+msgstr "数量"
+
+#: models.py:1311
+msgid "Display On Confirmation?"
+msgstr "显示在确认函上吗？"
+
+#: models.py:1314+models.py:2145
+msgid "Image"
+msgstr "图像"
+
+#: models.py:1330
+msgid "Sample Picture"
+msgstr "样品照片"
+
+#: models.py:1331
+msgid "Sample Pictures"
+msgstr "样品照片"
+
+#: models.py:1341
+msgid "Package"
+msgstr "套餐"
+
+#: models.py:1343+models.py:1414+models.py:1505+models.py:2185+models.py:2395
+msgid "Rush"
+msgstr "加急"
+
+#: models.py:1390+models.py:1400+models.py:1481+models.py:2170
+msgid "Package Order"
+msgstr "套餐项目"
+
+#: models.py:1391
+msgid "Package Orders"
+msgstr "套餐项目"
+
+#: models.py:1409+models.py:1490+models.py:2192
+msgid "Invoicing Item"
+msgstr "发票项目"
+
+#: models.py:1411
+msgid "Quantity"
+msgstr "数量"
+
+#: models.py:1417
+msgid "Supplemental Instructions"
+msgstr "补充说明"
+
+#: models.py:1431
+msgid "Care Instruction Order"
+msgstr "洗标项目"
+
+#: models.py:1432+models.py:1494
+msgid "Care Instruction Orders"
+msgstr "洗标项目"
+
+#: models.py:1461
+msgid "Care Instruction Order Attribute"
+msgstr "洗标项目属性"
+
+#: models.py:1462
+msgid "Care Instruction Order Attributes"
+msgstr "洗标项目属性"
+
+#: models.py:1472
+msgid "Prerequisite Test Orders"
+msgstr "先决条件测试订单"
+
+#: models.py:1486+templates/sample_workbench/report/evaluation_report.html:16+templates/sample_workbench/report/report_summary_page.html:14
+msgid "Test"
+msgstr "测试"
+
+#: models.py:1496+models.py:2183+models.py:2393
+msgid "Ordered At"
+msgstr "在。。下订单"
+
+#: models.py:1498
+msgid "Is Active?"
+msgstr "是有效的吗"
+
+#: models.py:1502
+msgid "Is Internal Testing?"
+msgstr "是内部检测吗?"
+
+#: models.py:1511
+msgid "Worksheet Template"
+msgstr "工作单模板"
+
+#: models.py:1517
+msgid "Report Template"
+msgstr "报告模板"
+
+#: models.py:1519
+msgid "Needs Final Results?"
+msgstr "需要最终结果吗？"
+
+#: models.py:1522
+msgid "Test Modifications"
+msgstr "测试修改"
+
+#: models.py:1708+models.py:1980+models.py:2090+models.py:2140+models.py:3326+models.py:3348
+msgid "Test Order"
+msgstr "测试项目"
+
+#: models.py:1717
+msgid "Letter"
+msgstr "字母"
+
+#: models.py:1723
+msgid "Third Party Identifier"
+msgstr "第三方识别号"
+
+#: models.py:1726
+msgid "Is a Retest?"
+msgstr "是重测吗"
+
+#: models.py:1729
+msgid "Retest Rush"
+msgstr "重测加急"
+
+#: models.py:1732
+msgid "Retest Ordered At"
+msgstr "在..安排重测"
+
+#: models.py:1734
+msgid "Included In Calculation"
+msgstr "包括在计算内"
+
+#: models.py:1735
+msgid "Internal Due Date"
+msgstr "内部到期时间"
+
+#: models.py:1736
+msgid "External Due Date"
+msgstr "外部到期时间"
+
+#: models.py:1854+models.py:1862+models.py:1885+models.py:1910
+msgid "Iteration"
+msgstr "测试分样"
+
+#: models.py:1855
+msgid "Iterations"
+msgstr "测试分样"
+
+#: models.py:1877
+msgid "Iteration Produced Result"
+msgstr "分样报告结果"
+
+#: models.py:1878
+msgid "Iteration Produced Results"
+msgstr "分样报告结果"
+
+#: models.py:1902+models.py:3274+models.py:3315
+msgid "Iteration Internal Result"
+msgstr "分样内部结果"
+
+#: models.py:1903
+msgid "Iteration Internal Results"
+msgstr "分样内部结果"
+
+#: models.py:1917
+msgid "Test Step"
+msgstr "测试步骤"
+
+#: models.py:1919+models.py:3283
+msgid "Start Time"
+msgstr "起始时间"
+
+#: models.py:1920+models.py:3284
+msgid "End Time"
+msgstr "结束时间"
+
+#: models.py:1921
+msgid "Is Complete?"
+msgstr "完成了吗？"
+
+#: models.py:1922
+msgid "Temperature"
+msgstr "温度"
+
+#: models.py:1925
+msgid "Relative Humidity"
+msgstr "相对湿度"
+
+#: models.py:1940
+msgid "Testing Time Entry"
+msgstr "测试时间录入"
+
+#: models.py:1941
+msgid "Testing Time Entries"
+msgstr "测试时间录入"
+
+#: models.py:1951
+msgid "Catalog Option"
+msgstr "目录选项"
+
+#: models.py:1954
+msgid "Test Order Option Name"
+msgstr "测试订单选项名称"
+
+#: models.py:1972
+msgid "Test Order Option"
+msgstr "测试订单选项"
+
+#: models.py:1973
+msgid "Test Order Options"
+msgstr "测试订单选项"
+
+#: models.py:1985+models.py:2625+models.py:2748+templates/sample_workbench/report/report_summary_page.html:17
+msgid "Expected Value"
+msgstr "期望值"
+
+#: models.py:1991
+msgid "Expected Value Provided In"
+msgstr "..提供的期望值"
+
+#: models.py:1994+models.py:2095
+msgid "Original Value"
+msgstr "原始值"
+
+#: models.py:1996+models.py:2097
+msgid "Adjusted Value"
+msgstr "调整值"
+
+#: models.py:1999
+msgid "Adjusted Value (Float)"
+msgstr "调整值(浮动)"
+
+#: models.py:2001+models.py:2147
+msgid "Included In Report?"
+msgstr "包含在报告上？"
+
+#: models.py:2007
+msgid "Unit Converted To"
+msgstr "单位转换为"
+
+#: models.py:2082+models.py:3041
+msgid "Test Order Produced Result"
+msgstr "测试项目生成的结果"
+
+#: models.py:2083
+msgid "Test Order Produced Results"
+msgstr "测试项目生成的结果"
+
+#: models.py:2132
+msgid "Test Order Internal Result"
+msgstr "测试项目内部的结果"
+
+#: models.py:2133
+msgid "Test Order Internal Results"
+msgstr "测试项目内部的结果"
+
+#: models.py:2156
+msgid "Test Order Result Picture"
+msgstr "测试项目结果照片"
+
+#: models.py:2157
+msgid "Test Order Result Pictures"
+msgstr "测试项目结果照片"
+
+#: models.py:2175+models.py:2381
+msgid "Evaluation"
+msgstr "评估"
+
+#: models.py:2179+models.py:2385
+msgid "Expected Designations"
+msgstr "期望值"
+
+#: models.py:2188+models.py:2398
+msgid "Suggested Label"
+msgstr "建议标签"
+
+#: models.py:2341+models.py:2350+models.py:2577+models.py:2615+models.py:2954
+msgid "Evaluation Order"
+msgstr "评估项目"
+
+#: models.py:2355+models.py:2559
+msgid "Conditional Designation"
+msgstr "有条件的名称"
+
+#: models.py:2358+models.py:2562
+msgid "Is IDFL Assumed?"
+msgstr "是IDFL假设的吗?"
+
+#: models.py:2391+models.py:3351
+msgid "Compared Samples"
+msgstr "对比样品"
+
+#: models.py:2546+models.py:2554+models.py:2738+models.py:2916+models.py:2991
+msgid "Evaluation Comparison Order"
+msgstr "对比评估项目"
+
+#: models.py:2581+models.py:2926
+msgid "Evaluation Requirement"
+msgstr "评估要求"
+
+#: models.py:2585+models.py:2729+models.py:2920+models.py:3035+models.py:3078
+msgid "Evaluatee Result"
+msgstr "评估结果"
+
+#: models.py:2588+models.py:2927+models.py:3043+models.py:3081+templates/sample_workbench/report/evaluation_report.html:20
+msgid "Finding"
+msgstr "结论"
+
+#: models.py:2606
+msgid "Evaluation Requirement Result"
+msgstr "评估要求结果"
+
+#: models.py:2607
+msgid "Evaluation Requirement Results"
+msgstr "评估要求结果"
+
+#: models.py:2619+models.py:2742
+msgid "Evaluatee"
+msgstr "评估"
+
+#: models.py:2622+models.py:2745
+msgid "Variables"
+msgstr "变化"
+
+#: models.py:2623+models.py:2746
+msgid ""
+"Test Order Produced Result objects that used in the formula as variables"
+msgstr "在公式中作为变量使用的测试顺序产生结果对象"
+
+#: models.py:2730
+msgid "Evaluatee Results"
+msgstr "评估结果"
+
+#: models.py:2751
+msgid "Individual Values"
+msgstr "单独的结果"
+
+#: models.py:2752
+msgid "Average Value"
+msgstr "平均结果"
+
+#: models.py:2907
+msgid "Comparison Evaluatee Result"
+msgstr "对比评估结果"
+
+#: models.py:2908
+msgid "Comparison Evaluatee Results"
+msgstr "对比评估结果"
+
+#: models.py:2945
+msgid "Evaluation Requirement Comparison Result"
+msgstr "评估要求对比结果"
+
+#: models.py:2946
+msgid "Evaluation Requirement Comparison Results"
+msgstr "评估要求对比结果"
+
+#: models.py:2959+models.py:2996
+msgid "Designation"
+msgstr "指定"
+
+#: models.py:2982+models.py:3027
+msgid "Designation Conclusion"
+msgstr "指定结论"
+
+#: models.py:2983
+msgid "Designation Conclusions"
+msgstr "指定结论"
+
+#: models.py:3019+models.py:3070
+msgid "Designation Comparison Conclusion"
+msgstr "指定对比结论"
+
+#: models.py:3020
+msgid "Designation Comparison Conclusions"
+msgstr "指定对比结论"
+
+#: models.py:3031+models.py:3074
+msgid "Designation Requirement"
+msgstr "指定要求"
+
+#: models.py:3061
+msgid "Designation Requirement Result"
+msgstr "指定要求结果"
+
+#: models.py:3062
+msgid "Designation Requirement Results"
+msgstr "指定要求结果"
+
+#: models.py:3099
+msgid "Designation Requirement Comparison Result"
+msgstr "指定要求对比结果"
+
+#: models.py:3100
+msgid "Designation Requirement Comparison Results"
+msgstr "指定要求对比结果"
+
+#: models.py:3109
+msgid "Date"
+msgstr "日期"
+
+#: models.py:3110
+msgid "Is shown on report?"
+msgstr "是否需要显示在报告上？"
+
+#: models.py:3120
+msgid "Report Log"
+msgstr "报告记录"
+
+#: models.py:3121
+msgid "Report Logs"
+msgstr "报告记录"
+
+#: models.py:3162
+msgid "Sample Report"
+msgstr "样品报告"
+
+#: models.py:3163
+msgid "Sample Reports"
+msgstr "样品报告"
+
+#: models.py:3173
+msgid "Shipment"
+msgstr "装运"
+
+#: models.py:3175
+msgid "Item Shipped"
+msgstr "寄出的样品"
+
+#: models.py:3176
+msgid "Is this a return?"
+msgstr "这是一个退样吗？"
+
+#: models.py:3178
+msgid "Billable Expense"
+msgstr "扩展的账单信息"
+
+#: models.py:3185
+msgid "Sample Shipping Item"
+msgstr "寄出样品"
+
+#: models.py:3186
+msgid "Sample Shipping Items"
+msgstr "寄出样品"
+
+#: models.py:3194
+msgid "Item Received"
+msgstr "收到的样品"
+
+#: models.py:3198
+msgid "Prepared By"
+msgstr "由..准备"
+
+#: models.py:3200
+msgid "Prepared At"
+msgstr "在..准备"
+
+#: models.py:3206
+msgid "Weight"
+msgstr "重量"
+
+#: models.py:3207
+msgid "Dimensions"
+msgstr "尺寸"
+
+#: models.py:3208
+msgid "Is Reference Stored?"
+msgstr "是否有余样存起来？"
+
+#: models.py:3211
+msgid "Is Empty?"
+msgstr "是否全部用完？"
+
+#: models.py:3213
+msgid "Item Stored"
+msgstr "存下来的东西"
+
+#: models.py:3214
+msgid "Box Number"
+msgstr "箱号"
+
+#: models.py:3215
+msgid "Box Date"
+msgstr "箱号日期"
+
+#: models.py:3216+models.py:3285
+msgid "Comments"
+msgstr "评论"
+
+#: models.py:3222
+msgid "Sample Preparation Record"
+msgstr "样品处理记录"
+
+#: models.py:3223
+msgid "Sample Preparation Records"
+msgstr "样品处理记录"
+
+#: models.py:3227
+msgid "Brand Name"
+msgstr "品牌名"
+
+#: models.py:3234
+msgid "Brands"
+msgstr "品牌"
+
+#: models.py:3244
+msgid "Market"
+msgstr "市场"
+
+#: models.py:3254
+msgid "Destination Testing Location"
+msgstr "目的测试位置"
+
+#: models.py:3255
+msgid "Item(s)"
+msgstr "项目"
+
+#: models.py:3268
+msgid "Itinerary"
+msgstr "行程"
+
+#: models.py:3269
+msgid "Itineraries"
+msgstr "行程"
+
+#: models.py:3275
+msgid "Old Value"
+msgstr "旧数据"
+
+#: models.py:3276
+msgid "New Value"
+msgstr "新数据"
+
+#: models.py:3304+models.py:3312
+msgid "Recheck"
+msgstr "核对"
+
+#: models.py:3305
+msgid "Rechecks"
+msgstr "核对"
+
+#: models.py:3330
+msgid "Purpose"
+msgstr "目的"
+
+#: models.py:3336
+msgid "Additional Sample"
+msgstr "补充样品"
+
+#: models.py:3337
+msgid "Additional Samples"
+msgstr "补充样品"
+
+#: models.py:3357
+msgid "Test Comparison Order"
+msgstr "测试对比项目"
+
+#: models.py:3358
+msgid "Test Comparison Orders"
+msgstr "测试对比项目"
+
+#: models.py:3364
+msgid "Key"
+msgstr "钥匙"
+
+#: models.py:3367
+msgid "To be used by developers in the system"
+msgstr "供系统中开发人员使用"
+
+#: models.py:3370
+msgid "Email Template"
+msgstr "电子邮件模板"
+
+#: models.py:3371
+msgid "Email Templates"
+msgstr "电子邮件模板"
+
+#: models.py:3376
+msgid "Is Visible to Client?"
+msgstr "客户端可见吗?"
+
+#: models.py:3382
+msgid "Sample Stage"
+msgstr "样品阶段"
+
+#: models.py:3383
+msgid "Sample Stages"
+msgstr "样品阶段"
+
+#: models.py:3392
+msgid "Stage"
+msgstr "阶段"
+
+#: models.py:3398
+msgid "Progress Log"
+msgstr "进程记录"
+
+#: models.py:3399
+msgid "Progress Logs"
+msgstr "进程记录"
+
+#: templates/sample_workbench/client_portal/email/test_order_retest/html_body.html:9
+msgid ""
+"\n"
+"            You're receiving this email because %(user)s from %(company)s "
+"has requested a %(test)s retest\n"
+"            on %(idfl_number)s from the Client Portal.\n"
+"        "
+msgstr ""
+"\n"
+"您收到此电子邮件是因为%(公司)s的%(用户)s请求%(测试)s从客户端门户对%(idfl_number)s进行重新测试"
+
+#: templates/sample_workbench/client_portal/email/test_order_retest/html_body.html:18
+msgid ""
+"\n"
+"            \"%(reason)s\"\n"
+"        "
+msgstr ""
+"\n"
+"原因"
+
+#: templates/sample_workbench/client_portal/email/test_order_retest/html_body.html:26
+msgid "Thank you!"
+msgstr "谢谢"
+
+#: templates/sample_workbench/client_portal/email/test_order_retest/html_body.html:27
+msgid "The %(site_name)s team"
+msgstr "团队"
+
+#: templates/sample_workbench/report/default_footer.html:66
+msgid ""
+"\n"
+"                    This analysis represents (within normal testing "
+"variances)\n"
+"                    the test results from the sample(s) submitted.  The "
+"analysis may\n"
+"                    not represent the entire lot, batch or production run. "
+"In no event\n"
+"                    shall IDFL be responsible or liable for any direct, "
+"indirect,\n"
+"                    punitive, incidental, special, or consequential damages "
+"whatsoever\n"
+"                    arising out of or connected with the use of, misuse of, "
+"or\n"
+"                    reliance upon such results or analysis. This test report "
+"is\n"
+"                    subject to the Terms and Conditions found at www.idfl."
+"com.\n"
+"                "
+msgstr ""
+"\n"
+"该分析表示(在正常测试方差内)来自提交的样品的测试结果。分析可能不代表整个批、批或生产运行。在任何事件IDFL应对任何直接、间接、\n"
+"惩罚性的、附带的、特殊的或间接的损害由使用、误用或引起的或与之有关的依靠这样的结果或分析这份检测报告是以www.idfl.com上的条款和条件为准。"
+
+#: templates/sample_workbench/report/default_footer.html:91
+msgid "IDFL LABORATORY AND INSTITUTE"
+msgstr "IDFL 实验室"
+
+#: templates/sample_workbench/report/default_footer.html:95
+msgid "Approved By"
+msgstr "由。。。批准"
+
+#: templates/sample_workbench/report/evaluation_report.html:15
+msgid "Evaluation Component"
+msgstr "评估组件"
+
+#: templates/sample_workbench/report/evaluation_report.html:17+templates/sample_workbench/report/report_summary_page.html:15
+msgid "Test Component"
+msgstr "测试组件"
+
+#: templates/sample_workbench/report/evaluation_report.html:18
+msgid "Requirement"
+msgstr "要求"
+
+#: templates/sample_workbench/report/evaluation_report.html:19+templates/sample_workbench/report/report_summary_page.html:16
+msgid "Result"
+msgstr "结果"
+
+#: templates/sample_workbench/report/evaluation_report.html:29
+msgid "Basic"
+msgstr "寄出"
+
+#: templates/sample_workbench/report/evaluation_report.html:104
+msgid "IDFL Assumed"
+msgstr "IDFL 假设"
+
+#: templates/sample_workbench/report/evaluation_report.html:118
+msgid "Substitution for"
+msgstr "替换为"
+
+#: templates/sample_workbench/report/evaluation_report.html:172
+msgid "No labeling / expected values provided"
+msgstr "没有标签/无提供期望值"
+
+#: templates/sample_workbench/report/evaluation_report.html:190
+msgid "Product Label"
+msgstr "产品标签"
+
+#: templates/sample_workbench/report/evaluation_report.html:201
+msgid "Suggested Label based on"
+msgstr "建议标签"
+
+#: templates/sample_workbench/report/evaluation_report.html:201
+msgid "requirements"
+msgstr "要求"
+
+#: templates/sample_workbench/report/report_info_page.html:28
+msgid "Arrival Date"
+msgstr "收到日期"
+
+#: templates/sample_workbench/report/report_info_page.html:34
+msgid "Testing Date"
+msgstr "测试日期"
+
+#: templates/sample_workbench/report/report_info_page.html:39
+msgid "Testing Dates"
+msgstr "测试日期"
+
+#: templates/sample_workbench/report/report_info_page.html:41
+msgid "From"
+msgstr "从"
+
+#: templates/sample_workbench/report/report_info_page.html:42
+msgid "to"
+msgstr "到"
+
+#: templates/sample_workbench/report/report_info_page.html:50
+msgid "Report Date"
+msgstr "报告日期"
+
+#: templates/sample_workbench/report/report_info_page.html:68
+msgid "for"
+msgstr "为"
+
+#: templates/sample_workbench/report/report_info_page.html:70
+msgid "on"
+msgstr "在"
+
+#: templates/sample_workbench/report/report_info_page.html:81
+msgid "Shipped By"
+msgstr "由..寄出"
+
+#: templates/sample_workbench/report/report_info_page.html:86
+msgid "Label"
+msgstr "标签"
+
+#: templates/sample_workbench/report/report_summary_page.html:7
+msgid "Test Orders Summary"
+msgstr "测试项目总结"

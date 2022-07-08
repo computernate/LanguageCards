@@ -1,0 +1,194 @@
+
+<html>
+  <head>
+    <title>To Array</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<style>
+		table{
+			border:1px solid black;
+			page-break-after:always;
+			width:100%;
+		}
+		td{
+			border:1px solid black;
+			height:14vh;
+			width:20%;
+			text-align:center;
+			font-size:10px;
+			overflow:hidden;
+			padding:5px;
+			position:relative;
+		}
+		.level{
+			position:absolute;
+			right:5px;
+			top:5px;
+		}
+        textarea{
+            display:none;
+            height:250px;
+            width:500px;
+        }
+        #headTable{
+            width:500px;
+        }
+        #headTable td{
+            height:50px;
+            font-size:20px;
+        }
+		@media print{
+			textarea, input, #count, #headTable{
+                height:0px;
+                margin:0px;
+                padding:0px;
+                border:0px;
+                display:none;
+                visibility:hidden;
+			}
+			body{
+			    margin:0px;
+			}
+		}
+	</style>
+  </head>
+
+  <body onload="changeInput('French')">
+    <div id="container">
+        <table id="headTable">
+            <tr>
+                <td onclick="changeInput('French')" id="headFrench">French</td>
+                <td onclick="changeInput('Spanish')" id="headSpanish">Spanish</td>
+                <td onclick="changeInput('Japanese')" id="headJapanese">Japanese</td>
+                <td onclick="changeInput('Mandarin')" id="headMandarin">Mandarin</td>
+            </tr>
+        </table>
+        <textarea placeholder = "French" id="inputFrench"></textarea>
+        <textarea placeholder = "Spanish" id="inputSpanish"></textarea>
+        <textarea placeholder = "Japanese" id="inputJapanese"></textarea>
+        <textarea placeholder = "Mandarin" id="inputMandarin"></textarea>
+		<div id='count'></div>
+        <input id="run" type="button" value="Cards" onclick="run()" />
+        <input id="Make CSV" type="button" value="CSV" onclick="runCSV()" />
+        <div id="output">
+		
+		</div>
+    </div>
+	<script>
+
+const cols = 5;
+const rows = 7;
+
+function changeInput(lang){
+    var languages = ['French', 'Spanish', 'Japanese', 'Mandarin'];
+    for(l in languages){
+        document.getElementById('input'+languages[l]).style.display = "none";
+        document.getElementById('head'+languages[l]).style.backgroundColor = "White";
+        document.getElementById('head'+languages[l]).style.color = "black";
+    }
+    document.getElementById('input'+lang).style.display="block";
+    document.getElementById('head'+lang).style.backgroundColor = "Blue";
+    document.getElementById('head'+lang).style.color = "White";
+}
+
+
+async function run(lang){
+	var frenchData = document.getElementById("inputFrench").value.split('\n');
+	var spanishData = document.getElementById("inputSpanish").value.split('\n');
+	var japaneseData = document.getElementById("inputJapanese").value.split('\n');
+	var chineseData = document.getElementById("inputMandarin").value.split('\n');
+    await fetch("get_cards", {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+          french: frenchData,
+          spanish: spanishData,
+          japanese: japaneseData,
+          chinese: chineseData
+      })
+    }).then(res => res.json()).then(returned_data=>{
+        console.log(returned_data);
+        pages = Math.ceil(returned_data.length / (cols*rows))
+        var final_data = ""
+        var length=returned_data.length;
+
+        for(var a=0;a<pages;a++){
+
+            for_counter = (a==pages-1)?length%(cols*rows):cols*rows;
+            final_data+="<table>"
+
+            for(var b=0;b<for_counter;b++){
+                if(b%cols==0) final_data+="<tr>"
+                else if(b%cols==cols) final_data+="</tr>"
+                var curr_data = returned_data[(b+(a*cols*rows))]
+                if(curr_data==undefined) break;
+                final_data+="<td><div class='level'>"+curr_data.level+"</div>"
+                final_data+="<p>"+curr_data.e_sentence+"</p>"
+                final_data+="<p>"+curr_data.translation+"</p></td>";
+            }
+
+            final_data+="</table><table>"
+
+            seen_end=false;
+            for(var b=0;b<rows;b++){
+                final_data+="<tr>"
+                for(var c=(cols-1);c>=0;c--){
+                    var working_data=returned_data[(b*cols)+c+(a*cols*rows)]
+                    if(working_data==undefined){
+                        if(c==cols-1 && seen_end){
+                            final_data+="</tr>"
+                            final_data+="</table>"
+                            document.getElementById("output").innerHTML=final_data;
+                            return;
+                        }
+                        seen_end=true;
+                        final_data+="<td>&nbsp;</td>"
+                        continue
+                    }
+                  final_data+="<td><p>"+working_data.t_sentence+"</p><p>"+working_data.word+"<p></p>"+working_data.pronunciation+"</p></td>";
+                }
+                final_data+="</tr>"
+            }
+            final_data+="</table>"
+        }
+        document.getElementById("output").innerHTML=final_data;
+    });
+    return;
+	var input = document.getElementById("input").value;
+	input=input.replace(/[\n\r]/g, ",");
+	data = input.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+	console.log(data)
+
+}
+
+
+async function runCSV(lang){
+	var frenchData = document.getElementById("inputFrench").value.split('\n');
+	var spanishData = document.getElementById("inputSpanish").value.split('\n');
+	var japaneseData = document.getElementById("inputJapanese").value.split('\n');
+	var chineseData = document.getElementById("inputMandarin").value.split('\n');
+    await fetch("get_cards", {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+          french: frenchData,
+          spanish: spanishData,
+          japanese: japaneseData,
+          chinese: chineseData
+      })
+    }).then(res => res.json()).then(returned_data=>{
+   	    return_string = "<div>"
+    	for(var a=0;a<returned_data.length;a++){
+    		return_string += "<p>"+
+    			returned_data[a].e_sentence+'</p><p>'+returned_data[a].translation+"::";
+    		return_string += ""+
+    			returned_data[a].t_sentence+'</p><p>'+returned_data[a].word+'</p><p>'+returned_data[a].pronunciation+";</p>"
+    	}
+    	return_string += "</div>"
+        document.getElementById("output").innerHTML=return_string;
+    })
+}
+
+	
+	</script>
+  </body>
+</html>
