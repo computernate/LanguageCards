@@ -1,7 +1,7 @@
 
 <html>
   <head>
-    <title>To Array</title>
+    <title>Tongues Card Creator</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<style>
 		table{
@@ -28,16 +28,47 @@
             display:none;
             height:250px;
             width:500px;
+            margin:0px auto;
         }
         #headTable{
             width:500px;
+            margin:0px auto;
         }
         #headTable td{
             height:50px;
             font-size:20px;
+            background-color:white;
+        }
+
+        #buttons{
+            width:500px;
+            margin:0px auto;
+        }
+        #buttons td{
+            height:50px;
+            font-size:20px;
+            padding:0px
+        }
+        #buttons input{
+            width:100%;
+            height:100%;
+            background-color:white;
+        }
+        #buttons input:hover{
+            background-color:#8888FF;
+        }
+        #headTable td:hover{
+            background-color:#8888FF;
+        }
+        #instructions h1, #instructions p{
+            text-align:center;
+        }
+        ul{
+            width: 500px;
+            margin:0px auto
         }
 		@media print{
-			textarea, input, #count, #headTable{
+			textarea, input, #count, #headTable, #instructions, #buttons{
                 height:0px;
                 margin:0px;
                 padding:0px;
@@ -54,6 +85,26 @@
 
   <body onload="changeInput('French')">
     <div id="container">
+        <div id="instructions">
+            <h1><a href="http://tongueslanguagegames.com">Tongues Card Creator</a></h1>
+            <p>Enter the terms in the target language followed by a new line.</p>
+            <p>If you don't like the definition of a word, follow the term with a comma and put your own definition</p>
+            <p>To use cards:</p>
+            <ul>
+                <li>Click the "cards" button</li>
+                <li>Print the page 2 sided</li>
+                <li>If you don't have a printer that prints both sides, print the odds, then flip the stack, then print the evens.</li>
+            </ul>
+            <p>To use Quizlet:</p>
+            <ul>
+                <li>Click the "quizlet" button</li>
+                <li>Create a new quizlet study set</li>
+                <li>Import from Word, Excel, CSV</li>
+                <li>Copy the output and put in the "import" box</li>
+                <li>Put :: in "between term and definition"</li>
+                <li>Put ; in "between cards"</li>
+            </ul>
+        </div>
         <table id="headTable">
             <tr>
                 <td onclick="changeInput('French')" id="headFrench">French</td>
@@ -67,8 +118,10 @@
         <textarea placeholder = "Japanese" id="inputJapanese"></textarea>
         <textarea placeholder = "Mandarin" id="inputMandarin"></textarea>
 		<div id='count'></div>
-        <input id="run" type="button" value="Cards" onclick="run()" />
-        <input id="Make CSV" type="button" value="CSV" onclick="runCSV()" />
+        <table id="buttons">
+            <td><input id="run" type="button" value="Cards" onclick="run()" /></td>
+            <td><input id="Make Quizlet" type="button" value="Quizlet" onclick="runCSV()" /></td>
+        </table>
         <div id="output">
 		
 		</div>
@@ -77,6 +130,7 @@
 
 const cols = 5;
 const rows = 7;
+const buttons = '<td><input id="run" type="button" value="Cards" onclick="run()" /></td><td><input id="Make Quizlet" type="button" value="Quizlet" onclick="runCSV()" /></td>';
 
 function changeInput(lang){
     var languages = ['French', 'Spanish', 'Japanese', 'Mandarin'];
@@ -92,6 +146,7 @@ function changeInput(lang){
 
 
 async function run(lang){
+    document.getElementById('buttons').innerHTML = "<td>LOADING</td>"
 	var frenchData = document.getElementById("inputFrench").value.split('\n');
 	var spanishData = document.getElementById("inputSpanish").value.split('\n');
 	var japaneseData = document.getElementById("inputJapanese").value.split('\n');
@@ -111,7 +166,7 @@ async function run(lang){
         var final_data = ""
         var length=returned_data.length;
 
-        for(var a=0;a<pages;a++){
+        for(let a=0;a<pages;a++){
 
             for_counter = (a==pages-1)?length%(cols*rows):cols*rows;
             final_data+="<table>"
@@ -126,18 +181,28 @@ async function run(lang){
                 final_data+="<p>"+curr_data.translation+"</p></td>";
             }
 
+            console.log(returned_data)
+            if(returned_data.length%(rows*cols)<5){
+                console.log(returned_data.length%(rows*cols))
+                for(let b=0;b<5-returned_data.length%(rows*cols);b++){
+                    final_data+="<td></td>"
+                }
+                final_data+='</tr>'
+            }
+            console.log(returned_data)
             final_data+="</table><table>"
 
             seen_end=false;
-            for(var b=0;b<rows;b++){
+            for(let b=0;b<rows;b++){
                 final_data+="<tr>"
-                for(var c=(cols-1);c>=0;c--){
+                for(let c=(cols-1);c>=0;c--){
                     var working_data=returned_data[(b*cols)+c+(a*cols*rows)]
                     if(working_data==undefined){
                         if(c==cols-1 && seen_end){
                             final_data+="</tr>"
                             final_data+="</table>"
                             document.getElementById("output").innerHTML=final_data;
+                            document.getElementById("buttons").innerHTML = buttons;
                             return;
                         }
                         seen_end=true;
@@ -162,6 +227,7 @@ async function run(lang){
 
 
 async function runCSV(lang){
+    document.getElementById('buttons').innerHTML = "<td>LOADING</td>"
 	var frenchData = document.getElementById("inputFrench").value.split('\n');
 	var spanishData = document.getElementById("inputSpanish").value.split('\n');
 	var japaneseData = document.getElementById("inputJapanese").value.split('\n');
@@ -185,6 +251,7 @@ async function runCSV(lang){
     	}
     	return_string += "</div>"
         document.getElementById("output").innerHTML=return_string;
+        document.getElementById("buttons").innerHTML = buttons;
     })
 }
 
