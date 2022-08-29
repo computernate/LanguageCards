@@ -150,18 +150,18 @@ def get_cards_esp(all_words, conn):
       try:
         trans=split_word[1]
       except:
-        all_trans = soup.select("a[class^=neodictTranslation]")
+        all_trans = soup.select('a[href^="/translate"][lang="en"]')
         for translation in all_trans:
           trans+="{}, ".format(translation.string)
         trans.strip(", ")
       #print(soup)
-      sentences = soup.select('div[class^=indentSmall] div[class^=marginTopSmall]')
+      sentences = soup.select('.QkSyASiy')
 
       s_sentence = ""
       e_sentence = ""
       for child in sentences:
-        s_sentence = child.select_one('span[class^=exampleFirstHalf]').text
-        e_sentence = child.select_one('span[class^=exampleSecondHalf]').text
+        s_sentence = child.select_one('.S7halQ2C').text
+        e_sentence = child.select_one('.msZ0iHzp').text
         if(e_sentence != "" and len(e_sentence) > 2 and len(e_sentence) < 200):
           break
 
@@ -216,16 +216,16 @@ def get_cards_fra(all_words, conn):
         trans = translate_client.translate(word, target_language="en-US")['translatedText']
 
       #Get soup
-      dictionary_data = requests.get("https://fr.bab.la/exemples/francais/{}".format(word))
+      dictionary_data = requests.get(f"https://www.kikiladi.com/citation/{word}.html")
       soup = BeautifulSoup(dictionary_data.text, 'html.parser')
 
-      sentences = soup.select('.sense-group')
+      sentences = soup.select('ul.citation')
 
       f_sentence = ""
       e_sentence = ""
       for child in sentences:
         try:
-          f_sentence_dirty = child.select_one('.cs-source span:nth-child(2)').text
+          f_sentence_dirty = child.text
           f_sentence = re.sub('<.*?>', '', f_sentence_dirty)
           e_sentence = translate_client.translate(f_sentence, target_language="en-US")['translatedText']
         except:

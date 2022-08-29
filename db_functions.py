@@ -44,8 +44,8 @@ def read_query(connection, query):
         print(query)
 
 def get_word(language, word, conn):
-    return #read_query(conn, f"SELECT * FROM cards WHERE language='{language}' AND word='{word}' LIMIT 1;")
+    return read_query(conn, f"SELECT * FROM cards WHERE language='{language}' AND word='{word}' LIMIT 1;")
 
 def insert_word(conn, wo):
     return
-    #execute_query(conn, f"INSERT INTO cards(language, word, pronunciation, translation, t_sentence, e_sentence, level) VALUES('{wo['language']}', '{wo['word']}', '{wo['pronunciation']}', '{wo['translation']}', '{wo['t_sentence']}', '{wo['e_sentence']}', '{wo['level']}');")
+    execute_query(conn, f"INSERT INTO cards(language, word, pronunciation, translation, t_sentence, e_sentence, level) VALUES('{wo['language']}', '{wo['word']}', '{wo['pronunciation']}', '{wo['translation']}', '{wo['t_sentence']}', '{wo['e_sentence']}', '{wo['level']}');")
