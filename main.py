@@ -1,12 +1,10 @@
-"""
-Serves files out of its current directory
-Dosen't handle POST request
-"""
-
 from flask import Flask, render_template, request
 import requests
 import json
 from bs4 import BeautifulSoup
+import re
+from db_functions import *
+from google.cloud import translate_v2
 
 app = Flask(__name__)
 
@@ -16,238 +14,330 @@ def index():
 
 @app.route('/get_cards', methods=['POST'])
 def get_cards_all():
-  return_object = []
-  return_object += get_cards_fra(request.get_json()['french'])
-  return_object += get_cards_esp(request.get_json()['spanish'])
-  return_object += get_cards_jap(request.get_json()['japanese'])
-  return_object += get_chinese(request.get_json()['chinese'])
-  print(return_object)
-  return json.dumps(return_object)
+  try:
+    conn = create_db_connection()
+    return_object = []
+    return_object += get_cards_fra(request.get_json()['french'], conn)
+    return_object += get_cards_esp(request.get_json()['spanish'], conn)
+    return_object += get_cards_jap(request.get_json()['japanese'], conn)
+    return_object += get_chinese(request.get_json()['chinese'], conn)
+    return json.dumps(return_object)
+  except Exception as e:
+    print(e)
+    return json.dumps([{
+        "language":"JP",
+        "word":"",
+        "pronunciation": str(e),
+        "translation": "nateroskelley@gmail.com",
+        "t_sentence": "Error message:",
+        "e_sentence": "An error has occured. For help, please contact me at",
+        "level": "Oh no!",
+    }])
 
-def get_cards_jap(all_words):
+def get_cards_jap(all_words, conn):
   return_object = []
   for word in all_words:
-    print(word)
     if word == "":
       continue
     word = word.strip()
     split_word=word.split(',')
     word = split_word[0].strip()
 
-    #Get hiragana
-    post_data = {
-      "app_id": "fa0a9b5f79929cd507350044f56e6c0a68e47a9c10d0154513e85cd8747555ec", "sentence": word,
-      "output_type": "hiragana"
-    }
-    hira_data = requests.post("https://labs.goo.ne.jp/api/hiragana", data=post_data)
-    try:
-      hira = json.loads(hira_data.text)['converted']
-    except:
-      hira = ""
-    level = "0"
-    #Get translation
-    try:
-      trans=split_word[1]
-    except:
-      trans_data = requests.get("http://beta.jisho.org/api/v1/search/words?keyword={}".format(word))
-      trans = ', '.join(json.loads(trans_data.text)['data'][0]['senses'][0]['english_definitions'])
-      if len(json.loads(trans_data.text)['data'][0]['jlpt']) > 0: level = json.loads(trans_data.text)['data'][0]['jlpt'][0][-1]
-
-    #Get sentence
-    jisho_data = requests.get("https://jisho.org/search/{}%20%23sentences".format(word))
-    soup = BeautifulSoup(jisho_data.text, 'html.parser')
-    sentence = soup.find(class_="sentences")
-
-    e_sentence = ""
-    try:
-      for child in sentence.children:
-        if len(child) < 2: continue
-        j_sentence_raw = child.find(class_='japanese_sentence').find_all("li")
-        j_sentence=""
-        for li in j_sentence_raw:
-          j_sentence+=li.find_all("span")[-1].string
-        if len(j_sentence)<40:
-          e_sentence=child.find(class_='english').string
-          break
-    except:
-      pass
-
-    if e_sentence=="": j_sentence=""
-
-    return_object.append({
-      "word":word,
-      "pronunciation": hira,
-      "translation": trans,
-      "t_sentence": j_sentence,
-      "e_sentence": e_sentence,
-      "level": level,
-    })
-
-  return return_object
-
-def get_cards_esp(all_words):
-  return_object = []
-  for word in all_words:
-    print(word)
-    if word == "":
+    db_word = get_word("JP", word, conn)
+    if db_word:
+      db_word=db_word[0]
+      translation = db_word[4]
+      if len(split_word)>1: translation = split_word[1]
+      word_object = {
+        "language":"JP",
+        "word":db_word[2],
+        "pronunciation": db_word[3],
+        "translation": translation,
+        "t_sentence": db_word[5],
+        "e_sentence": db_word[6],
+        "level": db_word[7],
+      }
+      return_object.append(word_object)
       continue
-    word = word.strip()
-    split_word=word.split(',')
-    word = split_word[0].strip()
-
-    #Get soup
-    dictionary_data = requests.get("https://www.spanishdict.com/translate/{}".format(word))
-    soup = BeautifulSoup(dictionary_data.text, 'html.parser')
-
-    trans = ""
-    #get translation
-    try:
-      trans=split_word[1]
-    except:
-      all_trans = soup.select("a[class^=neodictTranslation]")
-      for translation in all_trans:
-        trans+="{}, ".format(translation.string)
-      trans.strip(", ")
-    #print(soup)
-    sentences = soup.select('div[class^=indentSmall] div[class^=marginTopSmall]')
-
-    s_sentence = ""
-    e_sentence = ""
-    for child in sentences:
-      s_sentence = child.select_one('span[class^=exampleFirstHalf]').text
-      e_sentence = child.select_one('span[class^=exampleSecondHalf]').text
-      if(e_sentence != "" and len(e_sentence) > 2 and len(e_sentence) < 200):
-        break
-
-    return_object.append({
-      "word":word,
-      "pronunciation": "",
-      "translation": trans,
-      "t_sentence": s_sentence,
-      "e_sentence": e_sentence,
-      "level": "S",
-    })
-  return return_object
-
-def get_cards_fra(all_words):
-  return_object = []
-  for word in all_words:
-    print(word)
-    if word == "":
-      continue
-    word = word.strip()
-    split_word=word.split(',')
-    word = split_word[0].strip()
-
-    #Get soup
-    dictionary_data = requests.get("https://www.linguee.com/english-french/search?source=auto&query={}".format(word))
-    soup = BeautifulSoup(dictionary_data.text, 'html.parser')
-
-    trans = ""
-    #get translation
-    try:
-      trans=split_word[1]
-    except:
-      all_trans = soup.select("a.dictLink.featured")
-      for translation in all_trans:
-        if translation.string is not None:
-          trans+="{}, ".format(translation.string)
-      trans.strip(", ")
-
-    sentences = soup.select('div.example_lines')
-
-    f_sentence = ""
-    e_sentence = ""
-    for child in sentences:
+    else:
+      #Get hiragana
+      post_data = {
+        "app_id": "fa0a9b5f79929cd507350044f56e6c0a68e47a9c10d0154513e85cd8747555ec", "sentence": word,
+        "output_type": "hiragana"
+      }
+      hira_data = requests.post("https://labs.goo.ne.jp/api/hiragana", data=post_data)
       try:
-        f_sentence = child.select_one('span.tag_s').text
-        e_sentence = child.select_one('span.tag_t').text
+        hira = json.loads(hira_data.text)['converted']
       except:
-        continue
-      if(e_sentence != "" and len(e_sentence) > 2 and len(e_sentence) < 200):
-        break
+        hira = ""
+      level = "0"
+      #Get translation
+      try:
+        trans=split_word[1]
+      except:
+        trans_data = requests.get("http://beta.jisho.org/api/v1/search/words?keyword={}".format(word))
+        trans = ', '.join(json.loads(trans_data.text)['data'][0]['senses'][0]['english_definitions'])
+        if len(json.loads(trans_data.text)['data'][0]['jlpt']) > 0: level = json.loads(trans_data.text)['data'][0]['jlpt'][0][-1]
 
-    return_object.append({
-      "word":word,
-      "pronunciation": "",
-      "translation": trans,
-      "t_sentence": f_sentence,
-      "e_sentence": e_sentence,
-      "level": "F",
-    })
+      #Get sentence
+      jisho_data = requests.get("https://jisho.org/search/{}%20%23sentences".format(word))
+      soup = BeautifulSoup(jisho_data.text, 'html.parser')
+      sentence = soup.find(class_="sentences")
+
+      e_sentence = ""
+      try:
+        for child in sentence.children:
+          if len(child) < 2: continue
+          j_sentence_raw = child.find(class_='japanese_sentence').find_all("li")
+          j_sentence=""
+          for li in j_sentence_raw:
+            j_sentence+=li.find_all("span")[-1].string
+          if len(j_sentence)<40:
+            e_sentence=child.find(class_='english').string
+            break
+      except:
+        pass
+
+      if e_sentence=="": j_sentence=""
+
+      word_object = {
+        "language":"JP",
+        "word":word,
+        "pronunciation": hira,
+        "translation": trans,
+        "t_sentence": j_sentence,
+        "e_sentence": e_sentence,
+        "level": level,
+      }
+      insert_word(conn, word_object)
+      return_object.append(word_object)
 
   return return_object
 
-def get_chinese(all_words):
+def get_cards_esp(all_words, conn):
   return_object = []
   for word in all_words:
-    print(word)
     if word == "":
       continue
     word = word.strip()
     split_word=word.split(',')
     word = split_word[0].strip()
 
-    dictionary_data = requests.get("https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define={}".format(word))
-    soup = BeautifulSoup(dictionary_data.text, 'html.parser')
+    db_word = get_word("SP", word, conn)
+    if db_word:
+      db_word=db_word[0]
+      translation = db_word[4]
+      if len(split_word)>1: translation = split_word[1]
+      word_object = {
+        "language":"SP",
+        "word":db_word[2],
+        "pronunciation": db_word[3],
+        "translation": translation,
+        "t_sentence": db_word[5],
+        "e_sentence": db_word[6],
+        "level": db_word[7],
+      }
+      return_object.append(word_object)
+      continue
 
-    c_sentence = ""
-    e_sentence = ""
-    pinyin = ""
-    trans = ""
+    else:
+      #Get soup
+      dictionary_data = requests.get("https://www.spanishdict.com/translate/{}".format(word))
+      soup = BeautifulSoup(dictionary_data.text, 'html.parser')
 
-    all_entries = soup.select('li.entry')
-    for entry in all_entries:
-      entry_word = ""
-      word_soup = entry.select('span.word:not(.trad) a')
+      trans = ""
+      #get translation
+      try:
+        trans=split_word[1]
+      except:
+        all_trans = soup.select("a[class^=neodictTranslation]")
+        for translation in all_trans:
+          trans+="{}, ".format(translation.string)
+        trans.strip(", ")
+      #print(soup)
+      sentences = soup.select('div[class^=indentSmall] div[class^=marginTopSmall]')
 
-      for word_part in word_soup:
-        entry_word+=word_part.string
-      if word == entry_word:
+      s_sentence = ""
+      e_sentence = ""
+      for child in sentences:
+        s_sentence = child.select_one('span[class^=exampleFirstHalf]').text
+        e_sentence = child.select_one('span[class^=exampleSecondHalf]').text
+        if(e_sentence != "" and len(e_sentence) > 2 and len(e_sentence) < 200):
+          break
+
+      word_object = {
+        "language":"SP",
+        "word":word,
+        "pronunciation": "",
+        "translation": trans,
+        "t_sentence": s_sentence,
+        "e_sentence": e_sentence,
+        "level": "S",
+      }
+      insert_word(conn, word_object)
+      return_object.append(word_object)
+
+  return return_object
+
+def get_cards_fra(all_words, conn):
+  translate_client = translate_v2.Client()
+  return_object = []
+  for word in all_words:
+    if word == "":
+      continue
+    word = word.strip()
+    split_word=word.split(',')
+    word = split_word[0].strip()
+
+
+    db_word = get_word("FR", word, conn)
+    if db_word:
+      db_word=db_word[0]
+      translation = db_word[4]
+      if len(split_word)>1: translation = split_word[1]
+      word_object = {
+        "language":"FR",
+        "word":db_word[2],
+        "pronunciation": db_word[3],
+        "translation": translation,
+        "t_sentence": db_word[5],
+        "e_sentence": db_word[6],
+        "level": db_word[7],
+      }
+      return_object.append(word_object)
+      continue
+    else:
+
+      trans = ""
+      #get translation
+      try:
+        trans=split_word[1]
+      except:
+        trans = translate_client.translate(word, target_language="en-US")['translatedText']
+
+      #Get soup
+      dictionary_data = requests.get("https://fr.bab.la/exemples/francais/{}".format(word))
+      soup = BeautifulSoup(dictionary_data.text, 'html.parser')
+
+      sentences = soup.select('.sense-group')
+
+      f_sentence = ""
+      e_sentence = ""
+      for child in sentences:
         try:
-          trans=split_word[1]
+          f_sentence_dirty = child.select_one('.cs-source span:nth-child(2)').text
+          f_sentence = re.sub('<.*?>', '', f_sentence_dirty)
+          e_sentence = translate_client.translate(f_sentence, target_language="en-US")['translatedText']
         except:
-          trans = entry.select_one('div.meaning').string.replace('\n', ', ')
+          continue
+        if(e_sentence != "" and len(e_sentence) > 2 and len(e_sentence) < 200 and len(f_sentence.split(" "))>3):
+          break
 
-        pinyin = entry.select_one('span.pinyin').string
-        try:
-          trad = entry.select_one('span.word.trad a').string
-        except:
-          trad = ""
-        if entry.select_one('a.show_examples'):
-          sentences_url = entry.select_one('a.show_examples')['href']
-          sentence_data = requests.get("https://chinese.yabla.com/chinese-english-pinyin-dictionary.php"+sentences_url.format(word))
-          sentence_soup = BeautifulSoup(sentence_data.text, 'html.parser')
-
-          all_sentences = sentence_soup.select('div.example_text')
-          for sentence in all_sentences:
-            e_sentence = sentence.select_one('div.en').string
-            if(len(e_sentence)<200):
-              c_sentence = ""
-              c_soup = sentence.select('div.zh_word span.zh_CN')
-              for c in c_soup:
-                c_sentence += c.string
-              break
-        break
+      word_object = {
+        "language":"FR",
+        "word":word,
+        "pronunciation": "",
+        "translation": trans,
+        "t_sentence": f_sentence,
+        "e_sentence": e_sentence,
+        "level": "F",
+      }
+      insert_word(conn, word_object)
+      return_object.append(word_object)
+  return return_object
 
 
-    #sentences = soup.select('div.translation__example')
-    # for child in sentences:
-    #   c_sentence = child.select_one('p[lang=zh]').string
-    #   e_sentence = child.select_one('p.ex-mean span').string
-    #   if(e_sentence != "" and len(e_sentence) > 2 and len(e_sentence) < 200):
-    #     break
+def get_chinese(all_words, conn):
+  return_object = []
+  for word in all_words:
+    if word == "":
+      continue
+    word = word.strip()
+    split_word=word.split(',')
+    word = split_word[0].strip()
 
-    if trad:
-      word = "{} ({})".format(word, trad)
-    return_object.append({
-      "word":word,
-      "pronunciation": pinyin,
-      "translation": trans,
-      "t_sentence": c_sentence,
-      "e_sentence": e_sentence,
-      "level": "",
-    })
+    db_word = get_word("MD", word, conn)
+    if db_word:
+      db_word=db_word[0]
+      translation = db_word[4]
+      if len(split_word)>1: translation = split_word[1]
+      word_object = {
+        "language":"MD",
+        "word":db_word[2],
+        "pronunciation": db_word[3],
+        "translation": translation,
+        "t_sentence": db_word[5],
+        "e_sentence": db_word[6],
+        "level": db_word[7],
+      }
+      return_object.append(word_object)
+      continue
+    else:
+
+
+      dictionary_data = requests.get("https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define={}".format(word))
+      soup = BeautifulSoup(dictionary_data.text, 'html.parser')
+
+      c_sentence = ""
+      e_sentence = ""
+      pinyin = ""
+      trans = ""
+
+      all_entries = soup.select('li.entry')
+      for entry in all_entries:
+        entry_word = ""
+        word_soup = entry.select('span.word:not(.trad) a')
+
+        for word_part in word_soup:
+          entry_word+=word_part.string
+        if word == entry_word:
+          try:
+            trans=split_word[1]
+          except:
+            trans = entry.select_one('div.meaning').string.replace('\n', ', ')
+
+          pinyin = entry.select_one('span.pinyin').string
+          try:
+            trad = entry.select_one('span.word.trad a').string
+          except:
+            trad = ""
+          if entry.select_one('a.show_examples'):
+            sentences_url = entry.select_one('a.show_examples')['href']
+            sentence_data = requests.get("https://chinese.yabla.com/chinese-english-pinyin-dictionary.php"+sentences_url.format(word))
+            sentence_soup = BeautifulSoup(sentence_data.text, 'html.parser')
+
+            all_sentences = sentence_soup.select('div.example_text')
+            for sentence in all_sentences:
+              e_sentence = sentence.select_one('div.en').string
+              if(len(e_sentence)<200):
+                c_sentence = ""
+                c_soup = sentence.select('div.zh_word span.zh_CN')
+                for c in c_soup:
+                  c_sentence += c.string
+                break
+          break
+
+
+      #sentences = soup.select('div.translation__example')
+      # for child in sentences:
+      #   c_sentence = child.select_one('p[lang=zh]').string
+      #   e_sentence = child.select_one('p.ex-mean span').string
+      #   if(e_sentence != "" and len(e_sentence) > 2 and len(e_sentence) < 200):
+      #     break
+
+      if trad:
+        word = "{} ({})".format(word, trad)
+      word_object = {
+        "language":"MD",
+        "word":word,
+        "pronunciation": pinyin,
+        "translation": trans,
+        "t_sentence": c_sentence,
+        "e_sentence": e_sentence,
+        "level": "",
+      }
+      insert_word(conn, word_object)
+      return_object.append(word_object)
   return return_object
 
 

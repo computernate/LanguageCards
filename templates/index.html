@@ -1,0 +1,125 @@
+
+<html>
+  <head>
+    <title>To Array</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<style>
+		table{
+			border:1px solid black;
+			page-break-after:always;
+			width:100%;
+		}
+		td{
+			border:1px solid black;
+			height:14vh;
+			width:20%;
+			text-align:center;
+			font-size:10px;
+			overflow:hidden;
+			padding:5px;
+		}
+		.eng{
+		    position: relative;
+		}
+		.jlpt{
+		    position: absolute;
+		    top:-15px;
+		    right:5px;
+		}
+		@media print{
+			textarea, input, #count{
+                height:0px;
+                margin:0px;
+                padding:0px;
+                border:0px;
+                display:none;
+                visibility:hidden;
+			}
+			body{
+			    margin:0px;
+			}
+		}
+	</style>
+  </head>
+
+  <body>
+    <div id="container">
+        <textarea id="input" style="height: 250px;width:500px;"></textarea>
+		<div id='count'></div>
+        <input id="run" type="button" value="Run" onclick="run()" />
+        <div id="output">
+		
+		</div>
+    </div>
+	<script>
+
+const cols = 5;
+const rows = 7;
+
+async function run(){
+	var input = document.getElementById("input").value;
+	data = input.split('\n')
+    await fetch("get_cards", {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    }).then(res => res.json()).then(returned_data=>{
+
+        pages = Math.ceil(returned_data.length / (cols*rows))
+        var final_data = ""
+        var count=0;
+        var length=returned_data.length;
+
+        for(var a=0;a<pages;a++){
+
+            for_counter = (a==pages-1)?length%(cols*rows):cols*rows;
+            final_data+="<table>"
+
+            for(var b=0;b<for_counter;b++){
+                if(b%cols==0) final_data+="<tr>"
+                else if(b%cols==cols) final_data+="</tr>"
+                var curr_data = returned_data[(b+(a*cols*rows))]
+                if(curr_data==undefined)break;
+                final_data+="<td><div class='eng'>"
+                final_data+="<div class='jlpt'>"+curr_data.level+"</div>"
+                final_data+="<p>"+curr_data.e_sentence+"</p>"
+                final_data+="<p>"+curr_data.translation+"</p></div></td>";
+            }
+
+            final_data+="</table><table>"
+
+            seen_end=false;
+            for(var b=0;b<rows;b++){
+                final_data+="<tr>"
+                for(var c=(cols-1);c>=0;c--){
+                    var working_data=returned_data[(b*cols)+c+(a*cols*rows)]
+                    if(working_data==undefined){
+                        if(c==cols-1 && seen_end){
+                            final_data+="</tr>"
+                            final_data+="</table>"
+                            document.getElementById("output").innerHTML=final_data;
+                            return;
+                        }
+                        seen_end=true;
+                        final_data+="<td>&nbsp;</td>"
+                        continue
+                    }
+                  final_data+="<td><p>"+working_data.j_sentence+"</p><p>"+working_data.word+"<p></p>"+working_data.hiragana+"</p></td>";
+                }
+                final_data+="</tr>"
+            }
+            final_data+="</table>"
+        }
+        document.getElementById("output").innerHTML=final_data;
+    });
+    return;
+	var input = document.getElementById("input").value;
+	input=input.replace(/[\n\r]/g, ",");
+	data = input.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+	console.log(data)
+
+}
+	
+	</script>
+  </body>
+</html>
