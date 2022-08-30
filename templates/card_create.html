@@ -86,7 +86,7 @@
   <body onload="changeInput('French')">
     <div id="container">
         <div id="instructions">
-            <h1><a href="http://tongueslanguagegames.com">Tongues Card Creator</a></h1>
+            <h1><a href="https://tongueslanguagegames.com">Tongues Card Creator</a></h1>
             <p>Enter the terms in the target language followed by a new line.</p>
             <p>If you don't like the definition of a word, follow the term with a comma and put your own definition</p>
             <p>To use cards:</p>
@@ -151,7 +151,7 @@ async function run(lang){
 	var spanishData = document.getElementById("inputSpanish").value.split('\n');
 	var japaneseData = document.getElementById("inputJapanese").value.split('\n');
 	var chineseData = document.getElementById("inputMandarin").value.split('\n');
-    await fetch("get_cards", {
+    await fetch("http://ec2-34-227-221-230.compute-1.amazonaws.com/get_cards", {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -232,7 +232,7 @@ async function runCSV(lang){
 	var spanishData = document.getElementById("inputSpanish").value.split('\n');
 	var japaneseData = document.getElementById("inputJapanese").value.split('\n');
 	var chineseData = document.getElementById("inputMandarin").value.split('\n');
-    await fetch("get_cards", {
+    await fetch("http://ec2-34-227-221-230.compute-1.amazonaws.com/get_cards", {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({

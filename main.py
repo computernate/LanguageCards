@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 import requests
 import json
 from bs4 import BeautifulSoup
@@ -340,12 +340,14 @@ def get_chinese(all_words, conn):
       return_object.append(word_object)
   return return_object
 
-
 @app.route('/playground')
 def playground():
   return render_template('playground.html')
 
+@app.route('/.well-known/pki-validation/<path:path>')
+def send_report(path):
+    return send_from_directory('static', path)
 
 
 if __name__ == '__main__':
-  app.run(debug=True)
+  app.run()
