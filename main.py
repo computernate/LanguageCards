@@ -5,6 +5,9 @@ from bs4 import BeautifulSoup
 import re
 from db_functions import *
 from google.cloud import translate_v2
+import os
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS']="/var/www/html/LanguageCards/google_api_credentials.json"
 
 app = Flask(__name__)
 
