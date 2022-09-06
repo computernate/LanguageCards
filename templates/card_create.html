@@ -151,7 +151,7 @@ async function run(lang){
 	var spanishData = document.getElementById("inputSpanish").value.split('\n');
 	var japaneseData = document.getElementById("inputJapanese").value.split('\n');
 	var chineseData = document.getElementById("inputMandarin").value.split('\n');
-    await fetch("http://ec2-34-227-221-230.compute-1.amazonaws.com/get_cards", {
+    await fetch("http://ec2-3-85-173-118.compute-1.amazonaws.com/get_cards", {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -232,7 +232,7 @@ async function runCSV(lang){
 	var spanishData = document.getElementById("inputSpanish").value.split('\n');
 	var japaneseData = document.getElementById("inputJapanese").value.split('\n');
 	var chineseData = document.getElementById("inputMandarin").value.split('\n');
-    await fetch("http://ec2-34-227-221-230.compute-1.amazonaws.com/get_cards", {
+    await fetch("http://ec2-3-85-173-118.compute-1.amazonaws.com/get_cards", {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
