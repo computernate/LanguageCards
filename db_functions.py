@@ -3,6 +3,7 @@ import mysql.connector
 
 def create_db_connection():
     connection = None
+    print("Creating connection")
     try:
         connection = mysql.connector.connect(
             host="tonguescards.ccyiqbgzjkvp.us-east-1.rds.amazonaws.com",
@@ -14,6 +15,7 @@ def create_db_connection():
     except mysql.connector.Error as err:
         print("Error: createdbconnection {}".format(err))
         print(err)
+    print("Got connection")
 
     return connection
 
@@ -44,6 +46,7 @@ def read_query(connection, query):
         print(query)
 
 def get_word(language, word, conn):
+    print("Getting word")
     return read_query(conn, f"SELECT * FROM cards WHERE language='{language}' AND word='{word}' LIMIT 1;")
 
 def insert_word(conn, wo):

@@ -132,6 +132,8 @@ const cols = 5;
 const rows = 7;
 const buttons = '<td><input id="run" type="button" value="Cards" onclick="run()" /></td><td><input id="Make Quizlet" type="button" value="Quizlet" onclick="runCSV()" /></td>';
 
+const base_url = "http://ec2-54-242-53-149.compute-1.amazonaws.com"
+
 function changeInput(lang){
     var languages = ['French', 'Spanish', 'Japanese', 'Mandarin'];
     for(l in languages){
@@ -151,7 +153,7 @@ async function run(lang){
 	var spanishData = document.getElementById("inputSpanish").value.split('\n');
 	var japaneseData = document.getElementById("inputJapanese").value.split('\n');
 	var chineseData = document.getElementById("inputMandarin").value.split('\n');
-    await fetch("http://ec2-3-85-173-118.compute-1.amazonaws.com/get_cards", {
+    await fetch(base_url+"/get_cards", {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -232,7 +234,7 @@ async function runCSV(lang){
 	var spanishData = document.getElementById("inputSpanish").value.split('\n');
 	var japaneseData = document.getElementById("inputJapanese").value.split('\n');
 	var chineseData = document.getElementById("inputMandarin").value.split('\n');
-    await fetch("http://ec2-3-85-173-118.compute-1.amazonaws.com/get_cards", {
+    await fetch(base_url+"/get_cards", {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
