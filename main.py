@@ -22,7 +22,6 @@ def get_cards_all():
     return_object = []
     return_object += get_cards_fra(request.get_json()['french'], conn)
     return_object += get_cards_esp(request.get_json()['spanish'], conn)
-    print("GEtting cards")
     return_object += get_cards_jap(request.get_json()['japanese'], conn)
     return_object += get_chinese(request.get_json()['chinese'], conn)
     return json.dumps(return_object)
@@ -39,7 +38,6 @@ def get_cards_all():
     }])
 
 def get_cards_jap(all_words, conn):
-  print("GEtting cards jap")
   return_object = []
   for word in all_words:
     if word == "":
@@ -356,4 +354,4 @@ def send_report(path):
 
 
 if __name__ == '__main__':
-  app.run(debug=True)
+  app.run()
