@@ -132,7 +132,7 @@ const cols = 5;
 const rows = 7;
 const buttons = '<td><input id="run" type="button" value="Cards" onclick="run()" /></td><td><input id="Make Quizlet" type="button" value="Quizlet" onclick="runCSV()" /></td>';
 
-const base_url = "http://ec2-54-242-53-149.compute-1.amazonaws.com"
+const base_url = window.location.origin
 
 function changeInput(lang){
     var languages = ['French', 'Spanish', 'Japanese', 'Mandarin'];
