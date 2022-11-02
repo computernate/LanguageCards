@@ -24,6 +24,7 @@ def get_cards_all():
     return_object += get_cards_esp(request.get_json()['spanish'], conn)
     return_object += get_cards_jap(request.get_json()['japanese'], conn)
     return_object += get_chinese(request.get_json()['chinese'], conn)
+    conn.close()
     return json.dumps(return_object)
   except Exception as e:
     print(e)
