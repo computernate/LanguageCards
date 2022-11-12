@@ -7,7 +7,9 @@ from db_functions import *
 from google.cloud import translate_v2
 import os
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS']="/var/www/html/LanguageCards/google_api_credentials.json"
+from tokenizers.french_tokenizer import tokenize as french_tokenize
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS']="D:\\nater\\Documents\\LanguageCards\\google_api_credentials.json"
 
 app = Flask(__name__)
 
@@ -37,6 +39,23 @@ def get_cards_all():
         "e_sentence": "An error has occured. For help, please contact me at",
         "level": "Oh no!",
     }])
+
+
+@app.route('/get_forms/2', methods=['POST'])
+def get_french_tokenized():
+  try:
+    returnWords = []
+    words = request.get_json()
+    for word in words:
+      try:
+        returnWords.append(french_tokenize(word))
+      except Exception as e:
+        returnWords.append(str(e))
+    return json.dumps(returnWords)
+  except Exception as e:
+    print(e)
+    return json.dumps({"ERROR:":str(e)})
+
 
 def get_cards_jap(all_words, conn):
   return_object = []
