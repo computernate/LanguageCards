@@ -368,10 +368,6 @@ def get_chinese(all_words, conn):
 def playground():
   return render_template('playground.html')
 
-@app.route('/.well-known/pki-validation/<path:path>')
-def send_report(path):
-    return send_from_directory('static', path)
-
 
 if __name__ == '__main__':
   app.run()
