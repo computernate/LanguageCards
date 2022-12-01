@@ -7,7 +7,7 @@ from db_functions import *
 from google.cloud import translate_v2
 import os
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS']="/var/www/html/LanguageCards/google_api_credentials.json"
+#os.environ['GOOGLE_APPLICATION_CREDENTIALS']="/var/www/html/LanguageCards/google_api_credentials.json"
 
 app = Flask(__name__)
 
@@ -24,6 +24,7 @@ def get_cards_all():
     return_object += get_cards_esp(request.get_json()['spanish'], conn)
     return_object += get_cards_jap(request.get_json()['japanese'], conn)
     return_object += get_chinese(request.get_json()['chinese'], conn)
+    return_object += get_korean_cards(request.get_json()['korean'],conn)
     return json.dumps(return_object)
   except Exception as e:
     print(e)
@@ -348,10 +349,27 @@ def get_chinese(all_words, conn):
 def playground():
   return render_template('playground.html')
 
-@app.route('/.well-known/pki-validation/<path:path>')
-def send_report(path):
-    return send_from_directory('static', path)
 
+
+def get_korean_cards(cards, conn):
+  print("WE ARE IN THE KOREAN FUNCTION")
+  print(cards)
+  return [
+      {
+      "language": "KR",
+      "word": cards[0],
+      "pronunciation": "pinyin",
+      "translation": "trans",
+      "t_sentence": "c_sentence",
+      "e_sentence": "e_sentence",
+      "level": "",
+    }
+  ]
+  res = requests.get('https://krdict.korean.go.kr/m/eng/searchResult')
+  soup = BeautifulSoup(res.text, 'html.parser')
+  div_tags = soup.find_all('div',id='container',class_='search_result')
+  div_strings = [x.stings for x in div_tags]
+  print([x.stings for x in div_tags])
 
 if __name__ == '__main__':
-  app.run()
+  app.run(debug=True)
