@@ -50,7 +50,15 @@ def get_french_tokenized():
       try:
         returnWords.append(french_tokenize(word))
       except Exception as e:
-        returnWords.append(str(e))
+        return {
+            returnWords.append([{
+                'BaseForm':"ERROR110",
+                'Forms':[],
+                'Language':-1,
+                'Translations':""
+            }])
+        }
+    print(returnWords)
     return json.dumps(returnWords)
   except Exception as e:
     print(e)
