@@ -24,7 +24,9 @@ def execute_query(connection, query):
     try:
         cursor.execute(query)
         connection.commit()
+        cursor.close()
     except mysql.connector.Error as err:
+        cursor.close()
         print("Error: execute_query {}".format(err))
         print(query)
 
@@ -39,8 +41,10 @@ def read_query(connection, query):
     try:
         cursor.execute(query)
         result = cursor.fetchall()
+        cursor.close()
         return result
     except Exception as e:
+        cursor.close()
         print("ERROR: READ QUERY:" + e)
         print(query)
 

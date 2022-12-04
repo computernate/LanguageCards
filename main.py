@@ -7,7 +7,9 @@ from db_functions import *
 from google.cloud import translate_v2
 import os
 
-#os.environ['GOOGLE_APPLICATION_CREDENTIALS']="/var/www/html/LanguageCards/google_api_credentials.json"
+from tokenizers.french_tokenizer import tokenize as french_tokenize
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS']="D:\\nater\\Documents\\LanguageCards\\google_api_credentials.json"
 
 app = Flask(__name__)
 
@@ -24,6 +26,7 @@ def get_cards_all():
     return_object += get_cards_esp(request.get_json()['spanish'], conn)
     return_object += get_cards_jap(request.get_json()['japanese'], conn)
     return_object += get_chinese(request.get_json()['chinese'], conn)
+    conn.close()
     return_object += get_korean_cards(request.get_json()['korean'],conn)
     return json.dumps(return_object)
   except Exception as e:
@@ -37,6 +40,31 @@ def get_cards_all():
         "e_sentence": "An error has occured. For help, please contact me at",
         "level": "Oh no!",
     }])
+
+
+@app.route('/get_forms/2', methods=['POST'])
+def get_french_tokenized():
+  try:
+    returnWords = []
+    words = request.get_json()
+    for word in words:
+      try:
+        returnWords.append(french_tokenize(word))
+      except Exception as e:
+        return {
+            returnWords.append([{
+                'BaseForm':"ERROR110",
+                'Forms':[],
+                'Language':-1,
+                'Translations':""
+            }])
+        }
+    print(returnWords)
+    return json.dumps(returnWords)
+  except Exception as e:
+    print(e)
+    return json.dumps({"ERROR:":str(e)})
+
 
 def get_cards_jap(all_words, conn):
   return_object = []
