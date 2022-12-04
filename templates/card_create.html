@@ -111,12 +111,14 @@
                 <td onclick="changeInput('Spanish')" id="headSpanish">Spanish</td>
                 <td onclick="changeInput('Japanese')" id="headJapanese">Japanese</td>
                 <td onclick="changeInput('Mandarin')" id="headMandarin">Mandarin</td>
+                <td onclick="changeInput('Korean')" id="headKorean">Korean</td>
             </tr>
         </table>
         <textarea placeholder = "French" id="inputFrench"></textarea>
         <textarea placeholder = "Spanish" id="inputSpanish"></textarea>
         <textarea placeholder = "Japanese" id="inputJapanese"></textarea>
         <textarea placeholder = "Mandarin" id="inputMandarin"></textarea>
+        <textarea placeholder = "Korean" id="inputKorean"></textarea>
 		<div id='count'></div>
         <table id="buttons">
             <td><input id="run" type="button" value="Cards" onclick="run()" /></td>
@@ -135,7 +137,7 @@ const buttons = '<td><input id="run" type="button" value="Cards" onclick="run()"
 const base_url = window.location.origin
 
 function changeInput(lang){
-    var languages = ['French', 'Spanish', 'Japanese', 'Mandarin'];
+    var languages = ['French', 'Spanish', 'Japanese', 'Mandarin', 'Korean'];
     for(l in languages){
         document.getElementById('input'+languages[l]).style.display = "none";
         document.getElementById('head'+languages[l]).style.backgroundColor = "White";
@@ -153,6 +155,7 @@ async function run(lang){
 	var spanishData = document.getElementById("inputSpanish").value.split('\n');
 	var japaneseData = document.getElementById("inputJapanese").value.split('\n');
 	var chineseData = document.getElementById("inputMandarin").value.split('\n');
+	var koreanData = document.getElementById("inputKorean").value.split('\n');
     await fetch(base_url+"/get_cards", {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
@@ -160,7 +163,8 @@ async function run(lang){
           french: frenchData,
           spanish: spanishData,
           japanese: japaneseData,
-          chinese: chineseData
+          chinese: chineseData,
+          korean: koreanData
       })
     }).then(res => res.json()).then(returned_data=>{
         console.log(returned_data);
