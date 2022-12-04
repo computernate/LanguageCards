@@ -26,8 +26,8 @@ def get_cards_all():
     return_object += get_cards_esp(request.get_json()['spanish'], conn)
     return_object += get_cards_jap(request.get_json()['japanese'], conn)
     return_object += get_chinese(request.get_json()['chinese'], conn)
-    conn.close()
     return_object += get_korean_cards(request.get_json()['korean'],conn)
+    conn.close()
     return json.dumps(return_object)
   except Exception as e:
     print(e)
@@ -379,25 +379,53 @@ def playground():
 
 
 
-def get_korean_cards(cards, conn):
-  print("WE ARE IN THE KOREAN FUNCTION")
-  print(cards)
-  return [
-      {
-      "language": "KR",
-      "word": cards[0],
-      "pronunciation": "pinyin",
-      "translation": "trans",
-      "t_sentence": "c_sentence",
-      "e_sentence": "e_sentence",
-      "level": "",
-    }
-  ]
-  res = requests.get('https://krdict.korean.go.kr/m/eng/searchResult')
-  soup = BeautifulSoup(res.text, 'html.parser')
-  div_tags = soup.find_all('div',id='container',class_='search_result')
-  div_strings = [x.stings for x in div_tags]
-  print([x.stings for x in div_tags])
+def get_korean_cards(all_words, conn):
+  return_object = []
+  translate_client = translate_v2.Client()
+  for word in all_words:
+    if word == "":
+      continue
+    word = word.strip()
+    split_word=word.split(',')
+    word = split_word[0].strip()
+
+    db_word = get_word("KR", word, conn)
+    if db_word:
+      db_word=db_word[0]
+      translation = db_word[4]
+      if len(split_word)>1: translation = split_word[1]
+      word_object = {
+        "language":"KR",
+        "word":db_word[2],
+        "pronunciation": db_word[3],
+        "translation": translation,
+        "t_sentence": db_word[5],
+        "e_sentence": db_word[6],
+        "level": db_word[7],
+      }
+      return_object.append(word_object)
+      continue
+    else:
+
+      trans = translate_client.translate(word, target_language="en-US")['translatedText']
+
+      sentence_data = requests.get(f'https://www.ybmallinall.com/styleV2/dicview.asp?kwdseq=0&kwdseq2=0&DictCategory=DictAll&DictNum=0&ById=0&PageSize=5&StartNum=0&GroupMode=0&cmd=0&kwd={word}&x=0&y=0')
+      soup = BeautifulSoup(sentence_data.text, 'html.parser')
+      e_sentence = soup.select_one('div.DictResultEngSnt .Word').string
+      k_sentence = soup.select_one('div.DictResultEngSnt .Example').string
+
+      word_object = {
+        "language":"KR",
+        "word":word,
+        "pronunciation": "",
+        "translation": trans,
+        "t_sentence": k_sentence,
+        "e_sentence": e_sentence,
+        "level": "",
+      }
+      insert_word(conn, word_object)
+      return_object.append(word_object)
+  return return_object
 
 if __name__ == '__main__':
   app.run(debug=True)
