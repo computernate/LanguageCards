@@ -11,7 +11,7 @@ from cardcodes.french import get_cards_fra
 
 from tokenizers.french_tokenizer import tokenize as french_tokenize
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS']="D:\\nater\\Documents\\LanguageCards\\google_api_credentials.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS']="/var/www/html/LanguageCards/google_api_credentials.json"
 
 app = Flask(__name__)
 
