@@ -74,7 +74,7 @@ def playground():
 
 @app.route('/describe')
 def describe_game():
-    return render_template('describe.html', imageNames=json.dumps(os.listdir("D:\\nater\\Documents\\LanguageCards\\static\\images")))
+    return render_template('describe.html', imageNames=json.dumps(os.listdir("/var/www/html/LanguageCards/static/images")))
 
 
 
