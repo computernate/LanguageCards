@@ -13,7 +13,7 @@ def get_korean_cards(all_words, conn):
     word = word.strip()
     split_word=word.split(',')
     word = split_word[0].strip()
-    print(word)
+
     db_word = get_word("KR", word, conn)
     if db_word:
       db_word=db_word[0]
@@ -32,7 +32,8 @@ def get_korean_cards(all_words, conn):
       continue
     else:
 
-      trans = translate_client.translate(word, target_language="en-US")['translatedText']
+      if len(split_word)==1: trans = translate_client.translate(word, target_language="en-US")['translatedText']
+      else: trans = split_word[1]
       try:
         sentence_data = requests.get(f'https://www.ybmallinall.com/styleV2/dicview.asp?kwdseq=0&kwdseq2=0&DictCategory=DictAll&DictNum=0&ById=0&PageSize=5&StartNum=0&GroupMode=0&cmd=0&kwd={word}&x=0&y=0')
         soup = BeautifulSoup(sentence_data.text, 'html.parser')
