@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function newImage(){
+            var imageUrls=JSON.parse({{ imageNames|tojson }});
+            var chosen = imageUrls[Math.floor(Math.random() * imageUrls.length)]
+            console.log(imageUrls)
+            console.log(chosen)
+            document.getElementById("output").innerHTML="<image src='/static/images/"+chosen+"' />"
+        }
+    </script>
+</head>
+<body onload="newImage()">
+    <div style="margin:20px auto"><button onclick="newImage()">NEW IMAGE</button></div>
+    <div id="output" style="margin:20px auto"></div>
+</body>
+</html>

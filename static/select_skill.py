@@ -1,6 +1,8 @@
 import random
+import numpy
 
 if __name__ == "__main__":
+
     skills=[
         'Vue',
         'React',

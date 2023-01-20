@@ -71,7 +71,9 @@ def get_french_tokenized():
 def playground():
   return render_template('playground.html')
 
-
+@app.route('/describe')
+def describe_game():
+    return render_template('describe.html', imageNames=json.dumps(os.listdir("D:\\nater\\Documents\\LanguageCards\\static\\images")))
 
 
 

@@ -46,4 +46,13 @@ def checkException(word, translation):
                 "Language":2
             }
         ]
+    if word == "d":
+        return [
+            {
+                "Translations":[{"Language": 1, "Term": "the"}],
+                "BaseForm":"d",
+                "Forms":[{"Word":"d", "Tags":["article"]}],
+                "Language":2
+            }
+        ]
     return None

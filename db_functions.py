@@ -14,7 +14,6 @@ def create_db_connection():
     except mysql.connector.Error as err:
         print("Error: createdbconnection {}".format(err))
         print(err)
-    print("Got connection")
 
     return connection
 
