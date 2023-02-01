@@ -77,22 +77,13 @@ def playground():
 def describe_game():
     return render_template('describe.html', imageNames=json.dumps(os.listdir("/var/www/html/LanguageCards/static/images")))
 
-@app.route('/situation')
-def situation_game():
-    return render_template('situation.html')
+@app.route('/situation/<id>/<user_id>')
+def situation_game(id, user_id):
+    return render_template('situation.html', id=id, user_id=user_id)
 
-situations = [
-    'SITUATION 1',
-    'SITUATION 2',
-    'SITUATION 3',
-    'SITUATION 4'
-]
-conditions = [
-    'CONDITION 1',
-    'CONDITION 2',
-    'CONDITION 3',
-    'CONDITION 4'
-]
+@app.route('/situation_home')
+def situation_home():
+    return render_template('situation_home.html')
 
 
 @app.route('/get_situation', methods=['GET'])
@@ -112,6 +103,77 @@ def post_situation():
         add_condition(create_db_connection(), request.get_json()['data'])
     return json.dumps({'status':'success'})
 
+@app.route('/new_game', methods=['POST'])
+def new_game():
+    conn = create_db_connection()
+    try:
+        game_data = new_game_db(conn, request.get_json()['hostname'])
+        return json.dumps(game_data)
+    except Exception as e:
+        return json.dumps({'error': '{}'.format(e)})
+
+@app.route('/join_game', methods=['POST'])
+def join_game():
+    conn = create_db_connection()
+    try:
+        game_data = join_game_db(conn, request.get_json()['keycode'], request.get_json()['name'])
+        return json.dumps(game_data)
+    except Exception as e:
+        return json.dumps({'error': '{}'.format(e)})
+
+@app.route('/game_data/<id>', methods=['GET'])
+def get_game_data(id):
+    conn = create_db_connection()
+    try:
+        return json.dumps(game_data(conn, id))
+    except Exception as e:
+        return json.dumps({'error': '{}'.format(e)})
+
+@app.route('/advance_game/<id>', methods=['GET'])
+def advance_game(id):
+    conn = create_db_connection()
+    return json.dumps(update_game(conn, id))
+
+@app.route('/remove_user/<id>', methods=['POST'])
+def remove_user(id):
+    conn = create_db_connection()
+    try:
+        remove_user_db(conn, id)
+        return json.dumps({"Success":True})
+    except Exception as e:
+        return json.dumps({'error': '{}'.format(e)})
+
+@app.route('/remove_situation/<id>', methods=['POST'])
+def remove_situation(id):
+    conn = create_db_connection()
+    try:
+        remove_situation_db(conn, id)
+        return json.dumps({"Success":True})
+    except Exception as e:
+        return json.dumps({'error': '{}'.format(e)})
+
+@app.route('/remove_condition/<id>', methods=['POST'])
+def remove_condition(id):
+    conn = create_db_connection()
+    try:
+        remove_condition_db(conn, id)
+        return json.dumps({"Success": True})
+    except Exception as e:
+        return json.dumps({'error': '{}'.format(e)})
+@app.route('/situation_mod')
+def situation_mod():
+    return render_template('situation_mod.html')
+
+@app.route('/list_game_elements', methods=['POST'])
+def list_game_elements():
+    conn = create_db_connection()
+    situations = list_situations(conn)
+    conditions = list_conditions(conn)
+
+    return {
+        'situations':situations,
+        'conditions':conditions
+    }
 
 if __name__ == '__main__':
   app.run()

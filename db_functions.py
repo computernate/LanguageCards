@@ -1,3 +1,6 @@
+import string
+import random
+
 import mysql.connector
 
 
@@ -35,7 +38,12 @@ def create_database():
 
 def create_situation_database():
   conn = create_db_connection()
-  execute_query(conn, "CREATE TABLE game_condition (id INT AUTO_INCREMENT, game_condition VARCHAR (255), likes INT(64), PRIMARY KEY(id));")
+  #execute_query(conn, "CREATE TABLE game_condition (id INT AUTO_INCREMENT, game_condition VARCHAR (255), likes INT(64), PRIMARY KEY(id));")
+  #execute_query(conn,
+  #  "CREATE TABLE players (id INT AUTO_INCREMENT, name VARCHAR(255), in_game INT(64), PRIMARY KEY(id));")
+  #execute_query(conn,
+  #                "CREATE TABLE games (id INT AUTO_INCREMENT, keycode VARCHAR (255), p1 INT(64), p2 INT(64), host INT(64), current_situation VARCHAR (255), current_condition VARCHAR (255), PRIMARY KEY(id));")
+
 
 
 def read_query(connection, query):
@@ -48,7 +56,7 @@ def read_query(connection, query):
         return result
     except Exception as e:
         cursor.close()
-        print("ERROR: READ QUERY:" + e)
+        print("ERROR: READ QUERY: {}".format(e))
         print(query)
 
 def get_word(language, word, conn):
@@ -65,6 +73,57 @@ def get_situation_db(conn):
     return read_query(conn, f"SELECT * FROM situation ORDER BY RAND() LIMIT 1;")
 def get_condition_db(conn):
     return read_query(conn, f"SELECT * FROM game_condition ORDER BY RAND() LIMIT 1;")
+def get_player_db(conn, game):
+    return read_query(conn, f"SELECT * FROM players WHERE in_game={game} ORDER BY RAND() LIMIT 1;")
+
+def new_game_db(conn, hostname):
+    execute_query(conn, f"INSERT INTO players (name) VALUES ('{hostname}');")
+    host = read_query(conn, f"SELECT id FROM players WHERE name = '{hostname}';")[0][0]
+    key = ''.join(random.choice(string.ascii_lowercase) for i in range(6))
+    execute_query(conn, f"INSERT INTO games (keycode, host, current_condition, current_situation) VALUES ('{key}', {host}, 'WAITING FOR HOST', 'WAITING FOR HOST');")
+    game_id = read_query(conn, f"SELECT last_insert_id() from games;")[0][0]
+    execute_query(conn, f"UPDATE players SET in_game={game_id} WHERE id={host};")
+    return {
+        'game_id':game_id,
+        'user_id':host
+    }
+
+def join_game_db(conn, game, hostname):
+    game_id = read_query(conn, f"SELECT id FROM games WHERE keycode={repr(game)}")[0][0]
+    execute_query(conn, f"INSERT INTO players (name, in_game) VALUES ({repr(hostname)}, {game_id});")
+    host = read_query(conn, f"SELECT id FROM players WHERE name = {repr(hostname)};")[0][0]
+    return {
+        'game_id':game_id,
+        'user_id':host
+    }
+
+def update_game(conn, game):
+    new_situation = get_situation_db(conn)[0][1]
+    new_condition = get_condition_db(conn)[0][1]
+    p1 = get_player_db(conn, game)[0][0]
+    p2 = get_player_db(conn, game)[0][0]
+    execute_query(conn, f"UPDATE games SET current_situation={repr(new_situation)}, current_condition={repr(new_condition)}, p1={repr(p1)}, p2={repr(p2)} WHERE id={game}")
+    return 'success'
+
+def game_data(conn, game_id):
+    game = read_query(conn, f"SELECT * FROM games WHERE id={game_id}")[0]
+    players = read_query(conn, f"SELECT * FROM players WHERE in_game={game_id}")
+    return {
+        'game':game,
+        'players':players
+    }
+
+def remove_user_db(conn, id):
+    execute_query(conn, F"DELETE FROM players WHERE id={id}")
+
+def remove_situation_db(conn, id):
+    execute_query(conn, F"DELETE FROM situation WHERE id={id}")
+def remove_condition_db(conn, id):
+    execute_query(conn, F"DELETE FROM game_condition WHERE id={id}")
+def list_situations(conn):
+    return read_query(conn, "SELECT * FROM situation")
+def list_conditions(conn):
+    return read_query(conn, "SELECT * FROM game_condition")
 
 if __name__ == "__main__":
     create_situation_database()

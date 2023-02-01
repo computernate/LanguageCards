@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #mod-wrapper{
+            display:flex;
+            justify-content:space-around;
+        }
+    </style>
+  <script>
+        async function list_game_elements(){
+            await fetch(window.location.origin+"/list_game_elements", {
+              method: "POST",
+              headers: {'Content-Type': 'application/json'},
+            }).then(res => res.json()).then(returned_data=>{
+                situation_table = "<table>"
+                for(var situation of returned_data.situations){
+                    situation_table+="<tr><td><button onclick='delete_situation("+situation[0]+")'>X</button></td><td>"+situation[1]+"</td></tr>"
+                }
+                situation_table+="</table>"
+                document.getElementById("situations").innerHTML=situation_table;
+                condition_table = "<table>"
+                for(var condition of returned_data.conditions){
+                    condition_table+="<tr><td><button onclick='delete_condition("+condition[0]+")'>X</button></td><td>"+condition[1]+"</td></tr>"
+                }
+                condition_table+="</table>"
+                document.getElementById("conditions").innerHTML=condition_table;
+            })
+        }
+        async function delete_situation(id){
+            await fetch(window.location.origin+"/remove_situation/"+id, {
+              method: "POST",
+              headers: {'Content-Type': 'application/json'},
+            }).then(res => res.json()).then(returned_data=> {
+                location.reload()
+            })
+        }
+        async function delete_condition(id){
+            await fetch(window.location.origin+"/remove_condition/"+id, {
+              method: "POST",
+              headers: {'Content-Type': 'application/json'},
+            }).then(res => res.json()).then(returned_data=> {
+                location.reload()
+            })
+        }
+  </script>
+</head>
+<body onload="list_game_elements()">
+    <div id="mod-wrapper">
+        <div id="situations"></div>
+        <div id="conditions"></div>
+    </div>
+</body>
+</html>

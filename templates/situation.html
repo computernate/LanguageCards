@@ -2,17 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Situation game</title>
     <script>
-        async function newSituation(){
-            await fetch(window.location.origin+"/get_situation", {
+        async function refreshGame(){
+            var game_id = window.location.href.split('/')[4];
+            var user_id = window.location.href.split('/')[5];
+            await fetch(window.location.origin+"/game_data/"+game_id, {
               method: "GET",
               headers: {'Content-Type': 'application/json'},
             }).then(res => res.json()).then(returned_data=>{
-                document.getElementById('situation').innerHTML=returned_data.situation
-                document.getElementById('condition').innerHTML=returned_data.condition
+                new_gamestate(returned_data, user_id)
             })
         }
+
+        async function advanceGame(){
+            var game_id = window.location.href.split('/')[4];
+            await fetch(window.location.origin+"/advance_game/"+game_id, {
+              method: "GET",
+              headers: {'Content-Type': 'application/json'},
+            }).then(res => res.json()).then(returned_data=>{
+                refreshGame();
+            })
+        }
+
+        function new_gamestate(gamestate, user_id){
+            if(gamestate.error!=undefined){
+                window.location=window.location.origin+"/situation_home";
+            }
+            var myname = gamestate.players.find(obj=>{
+                return obj[0] == user_id
+            })
+            console.log(myname)
+            if(myname==undefined){
+                window.location=window.location.origin+"/situation_home";
+                return
+            }
+            console.log(gamestate.game)
+            if(gamestate.game[4]!=user_id){
+                document.getElementById('advance_button').style.visibility='hidden'
+            }
+            if(gamestate.game[3]==user_id||gamestate.game[2]==user_id){
+                document.getElementById('keycode').innerHTML=gamestate.game[1]
+                document.getElementById('situation').innerHTML=gamestate.game[5]
+                document.getElementById('condition').innerHTML=gamestate.game[6]
+            }
+            else{
+                document.getElementById('keycode').innerHTML=gamestate.game[1]
+                var p1name = gamestate.players.find(obj=>{
+                    return obj[0] == gamestate.game[2]
+                })[1]
+                var p2name = gamestate.players.find(obj=>{
+                    return obj[0] == gamestate.game[3]
+                })[1]
+                document.getElementById('situation').innerHTML=p1name+" is playing"
+                document.getElementById('condition').innerHTML=p2name+" is playing"
+            }
+            var player_table="<table>"
+            if(gamestate.game[4]!=user_id){
+                document.getElementById('advance_button').style.visibility='hidden'
+                for(player of gamestate.players){
+                    player_table+="<tr><td>"+player[1]+"</td></tr>"
+                }
+            }
+            else{
+                for(player of gamestate.players){
+                    if(gamestate.game[4]!=player[0]) {
+                        player_table += "<tr><td>" + player[1] + "</td><td><button onclick='removeUser(" + player[0] + ")'>X</button></td></tr>"
+                    }
+                    else{
+                        player_table += "<tr><td>" + player[1] + "</td></tr>"
+                    }
+                }
+            }
+            player_table+="</table>";
+            document.getElementById('player-list').innerHTML=player_table
+        }
+
         async function submitSituation(type){
             await fetch(window.location.origin+"/new_situation", {
               method: "POST",
@@ -26,6 +91,22 @@
                 document.getElementById('newContent').value=""
             })
         }
+        async function removeUser(id){
+            await fetch(window.location.origin+"/remove_user/"+id, {
+              method: "POST",
+              headers: {'Content-Type': 'application/json'},
+            }).then(res => res.json()).then(returned_data=>{
+                refreshGame();
+            })
+        }
+        window.addEventListener("beforeunload", function(e){
+            fetch(window.location.origin+"/remove_user/"+window.location.href.split('/')[5], {
+              method: "POST",
+              headers: {'Content-Type': 'application/json'},
+            }).then(res => res.json()).then(returned_data=>{
+                return;
+            })
+        }, false);
     </script>
     <style>
         body, html, #wrapper{
@@ -63,14 +144,19 @@
         }
     </style>
 </head>
-<body onload="newSituation()">
+<body onload="refreshGame()">
     <div id="wrapper">
-        <div id="round-wrapper"><button onclick="newSituation()" class="centered-button" >NEXT ROUND</button></div>
+        <div id="round-wrapper">
+            <div id="keycode"></div>
+            <button onclick="refreshGame()" class="centered-button" id="refresh_button">NEXT ROUND</button>
+            <button onclick="advanceGame()" class="centered-button" id="advance_button" >ADVANCE ROUND</button>
+        </div>
         <div id="game-wrapper">
             <div class="game-piece" style="margin:20px auto"><p id="situation"></p></div>
             <div class="game-piece" style="margin:20px auto"><p id="condition" ></p></div>
         </div>
         <div id="suggest-wrapper">
+            <div id="player-list"></div>
             <input type="text" id="newContent" />
             <button onclick="submitSituation('condition')">Add Condition</button>
             <button onclick="submitSituation('situation')">Add Situation</button>

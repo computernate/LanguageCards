@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Situation home</title>
+    <script>
+        async function join_game(){
+            var name=document.getElementById("name").value
+            var keycode=document.getElementById("keycode").value
+            if(name==null||name=="") {
+                document.getElementById("name_error").innerHTML = "PLEASE ENTER A NAME";
+                return;
+            }
+            if(keycode==null||keycode=="") {
+                document.getElementById("keycodeerror").innerHTML = "PLEASE ENTER A KEYCODE";
+                return;
+            }
+            await fetch(window.location.origin+"/join_game", {
+              method: "POST",
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                  name: name,
+                  keycode: keycode,
+              })
+            }).then(res => res.json()).then(returned_data=>{
+                if(returned_data.error){
+                    document.getElementById("name_error").innerHTML = returned_data.error;
+                    return;
+                }
+                console.log(returned_data)
+                window.location=window.location.origin+"/situation/"+returned_data.game_id+"/"+returned_data.user_id
+            })
+        }
+        async function make_game(){
+            var name=document.getElementById("name").value
+            if(name==null||name=="") {
+                document.getElementById("name_error").innerHTML = "PLEASE ENTER A NAME";
+                return;
+            }
+            await fetch(window.location.origin+"/new_game", {
+              method: "POST",
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                  hostname: name,
+              })
+            }).then(res => res.json()).then(returned_data=>{
+                if(returned_data.error){
+                    document.getElementById("name_error").innerHTML = returned_data.error;
+                    return;
+                }
+                console.log(returned_data)
+                window.location=window.location.origin+"/situation/"+returned_data.game_id+"/"+returned_data.user_id
+            })
+        }
+
+
+    </script>
+</head>
+<body>
+
+<input id="name" name="name" />
+<div id="name_error"></div>
+<button onclick="make_game()">HOST GAME</button>
+
+<input id="keycode" name="keycode" />
+<div id="keycode_error"></div>
+<button onclick="join_game()">JOIN GAME</button>
+</body>
+</html>
