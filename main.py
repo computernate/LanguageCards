@@ -8,6 +8,7 @@ from cardcodes.spanish import get_cards_esp
 from db_functions import *
 import os
 from cardcodes.french import get_cards_fra
+import random
 
 from tokenizers.french_tokenizer import tokenize as french_tokenize
 
@@ -76,6 +77,39 @@ def playground():
 def describe_game():
     return render_template('describe.html', imageNames=json.dumps(os.listdir("/var/www/html/LanguageCards/static/images")))
 
+@app.route('/situation')
+def situation_game():
+    return render_template('situation.html')
+
+situations = [
+    'SITUATION 1',
+    'SITUATION 2',
+    'SITUATION 3',
+    'SITUATION 4'
+]
+conditions = [
+    'CONDITION 1',
+    'CONDITION 2',
+    'CONDITION 3',
+    'CONDITION 4'
+]
+
+
+@app.route('/get_situation', methods=['GET'])
+def get_situation():
+    return json.dumps({
+        'situation': random.choice(situations),
+        'condition': random.choice(conditions)
+    })
+
+
+@app.route('/new_situation', methods=['POST'])
+def post_situation():
+    if request.get_json()['type'] == "situation":
+        situations.append(request.get_json()['data'])
+    else:
+        conditions.append(request.get_json()['data'])
+    return json.dumps({'status':'success'})
 
 
 if __name__ == '__main__':
