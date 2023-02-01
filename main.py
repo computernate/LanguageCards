@@ -97,18 +97,19 @@ conditions = [
 
 @app.route('/get_situation', methods=['GET'])
 def get_situation():
+    conn = create_db_connection()
     return json.dumps({
-        'situation': random.choice(situations),
-        'condition': random.choice(conditions)
+        'situation': get_situation_db(conn)[0][1],
+        'condition': get_condition_db(conn)[0][1]
     })
 
 
 @app.route('/new_situation', methods=['POST'])
 def post_situation():
     if request.get_json()['type'] == "situation":
-        situations.append(request.get_json()['data'])
+        add_situation(create_db_connection(), request.get_json()['data'])
     else:
-        conditions.append(request.get_json()['data'])
+        add_condition(create_db_connection(), request.get_json()['data'])
     return json.dumps({'status':'success'})
 
 

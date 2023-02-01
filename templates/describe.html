@@ -7,8 +7,6 @@
         function newImage(){
             var imageUrls=JSON.parse({{ imageNames|tojson }});
             var chosen = imageUrls[Math.floor(Math.random() * imageUrls.length)]
-            console.log(imageUrls)
-            console.log(chosen)
             document.getElementById("output").innerHTML="<image src='/static/images/"+chosen+"' />"
         }
     </script>
