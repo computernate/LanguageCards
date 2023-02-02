@@ -77,7 +77,7 @@ def get_player_db(conn, game):
     return read_query(conn, f"SELECT * FROM players WHERE in_game={game} ORDER BY RAND() LIMIT 1;")
 
 def new_game_db(conn, hostname):
-    execute_query(conn, f"INSERT INTO players (name) VALUES ('{hostname}');")
+    execute_query(conn, f"INSERT INTO players (name, points) VALUES ('{hostname}', 0);")
     host = read_query(conn, f"SELECT id FROM players WHERE name = '{hostname}';")[0][0]
     key = ''.join(random.choice(string.ascii_lowercase) for i in range(6))
     execute_query(conn, f"INSERT INTO games (keycode, host, current_condition, current_situation) VALUES ('{key}', {host}, 'WAITING FOR HOST', 'WAITING FOR HOST');")
@@ -90,7 +90,7 @@ def new_game_db(conn, hostname):
 
 def join_game_db(conn, game, hostname):
     game_id = read_query(conn, f"SELECT id FROM games WHERE keycode={repr(game)}")[0][0]
-    execute_query(conn, f"INSERT INTO players (name, in_game) VALUES ({repr(hostname)}, {game_id});")
+    execute_query(conn, f"INSERT INTO players (name, in_game, points) VALUES ({repr(hostname)}, {game_id}, 0);")
     host = read_query(conn, f"SELECT id FROM players WHERE name = {repr(hostname)};")[0][0]
     return {
         'game_id':game_id,
@@ -120,6 +120,7 @@ def remove_user_db(conn, id):
     if len(is_host)!=0:
         print("HOST")
         execute_query(conn, F"DELETE FROM games WHERE id={is_host[0][0]}")
+        execute_query(conn, F"DELETE FROM players WHERE in_game={is_host[0][0]}")
 
 def remove_situation_db(conn, id):
     execute_query(conn, F"DELETE FROM situation WHERE id={id}")
@@ -130,8 +131,19 @@ def list_situations(conn):
 def list_conditions(conn):
     return read_query(conn, "SELECT * FROM game_condition")
 
+def add_point_db(conn, id):
+    execute_query(conn, F"UPDATE players SET points = points + 1 WHERE id = {id}")
+def remove_point_db(conn, id):
+    execute_query(conn, F"UPDATE players SET points = points - 1 WHERE id = {id}")
+
 if __name__ == "__main__":
     conn = create_db_connection()
+    execute_query(conn, "ALTER TABLE players ADD points VARCHAR(64)")
+    """
     rows = read_query(conn, "SELECT * FROM games")
     for row in rows:
-        print(row, '\n')
+        print(row)
+    rows = read_query(conn, "SELECT * FROM players")
+    for row in rows:
+        print(row)
+    """

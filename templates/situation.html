@@ -26,50 +26,62 @@
         }
 
         function new_gamestate(gamestate, user_id){
+            console.log(gamestate);
             if(gamestate.error!=undefined){
-                window.location=window.location.origin+"/situation_home";
+                removeUser(user_id).then(()=>{
+                    window.location=window.location.origin+"/situation_home";
+                    return
+                })
             }
+            console.log(gamestate);
             var myname = gamestate.players.find(obj=>{
                 return obj[0] == user_id
             })
             if(myname==undefined){
-                window.location=window.location.origin+"/situation_home";
-                return
+                removeUser(user_id).then(()=>{
+                    window.location=window.location.origin+"/situation_home";
+                    return
+                })
             }
+            document.getElementById('keycode').innerHTML="Room Code: "+gamestate.game[1]
             if(gamestate.game[4]!=user_id){
                 document.getElementById('advance_button').style.visibility='hidden'
             }
             if(gamestate.game[3]==user_id||gamestate.game[2]==user_id){
-                document.getElementById('keycode').innerHTML=gamestate.game[1]
                 document.getElementById('situation').innerHTML=gamestate.game[5]
                 document.getElementById('condition').innerHTML=gamestate.game[6]
             }
             else{
-                document.getElementById('keycode').innerHTML=gamestate.game[1]
-                var p1name = gamestate.players.find(obj=>{
-                    return obj[0] == gamestate.game[2]
-                })[1]
-                var p2name = gamestate.players.find(obj=>{
-                    return obj[0] == gamestate.game[3]
-                })[1]
-                document.getElementById('situation').innerHTML=p1name+" is playing"
-                document.getElementById('condition').innerHTML=p2name+" is playing"
+                try {
+                    var p1name = gamestate.players.find(obj => {
+                        return obj[0] == gamestate.game[2]
+                    })[1]
+                    var p2name = gamestate.players.find(obj => {
+                        return obj[0] == gamestate.game[3]
+                    })[1]
+                    document.getElementById('situation').innerHTML = p1name + " is playing"
+                    document.getElementById('condition').innerHTML = p2name + " is playing"
+                }
+                catch (error){
+                    document.getElementById('situation').innerHTML = "Waiting for host"
+                    document.getElementById('condition').innerHTML = "Waiting for host"
+                }
             }
             var player_table="<table>"
             if(gamestate.game[4]!=user_id){
                 document.getElementById('advance_button').style.visibility='hidden'
                 for(player of gamestate.players){
-                    player_table+="<tr><td>"+player[1]+"</td></tr>"
+                    player_table += "<tr><td>" + player[1] + "</td><td>"+player[3]+"</td></tr>"
                 }
             }
             else{
                 for(player of gamestate.players){
-                    if(gamestate.game[4]!=player[0]) {
-                        player_table += "<tr><td>" + player[1] + "</td><td><button onclick='removeUser(" + player[0] + ")'>X</button></td></tr>"
-                    }
-                    else{
-                        player_table += "<tr><td>" + player[1] + "</td></tr>"
-                    }
+                    player_table += "<tr><td>" + player[1] + "</td>";
+                    player_table += "<td><button onclick='removePoint(" + player[0] + ")'>-</button></td>"
+                    player_table += "<td>" + player[3] + "</td>"
+                    player_table += "<td><button onclick='addPoint(" + player[0] + ")' style='background-color:green;'>+</button></td>"
+                    player_table += "<td><button onclick='removeUser(" + player[0] + ")'>X</button></td>"
+                    player_table += "<td></td></tr>"
                 }
             }
             player_table+="</table>";
@@ -89,8 +101,25 @@
                 document.getElementById('newContent').value=""
             })
         }
+
         async function removeUser(id){
             await fetch(window.location.origin+"/remove_user/"+id, {
+              method: "POST",
+              headers: {'Content-Type': 'application/json'},
+            }).then(res => res.json()).then(returned_data=>{
+                refreshGame();
+            })
+        }
+        async function addPoint(id){
+            await fetch(window.location.origin+"/add_point/"+id, {
+              method: "POST",
+              headers: {'Content-Type': 'application/json'},
+            }).then(res => res.json()).then(returned_data=>{
+                refreshGame();
+            })
+        }
+        async function removePoint(id){
+            await fetch(window.location.origin+"/remove_point/"+id, {
               method: "POST",
               headers: {'Content-Type': 'application/json'},
             }).then(res => res.json()).then(returned_data=>{
@@ -107,57 +136,183 @@
         }, false);
     </script>
     <style>
+        @font-face{
+            font-family:coffee;
+            src: url("/static/fonts/Lets Coffee.ttf");
+        }
         body, html, #wrapper{
             width:100%;
             height:100%;
             margin:0px;
+            font-family:coffee;
+            color:white;
+        }
+        body{
+            background-image: linear-gradient(#050037, #4d004e);
         }
         #wrapper{
             display:flex;
-            flex-direction:column;
         }
         #round-wrapper{
-            flex:1;
+            flex:2;
             text-align:center;
             vertical-align: middle;
+            display:flex;
+            flex-direction:column;
         }
         #game-wrapper{
             flex:6;
             display:flex;
+            padding:20px;
+            align-items:center;
+            position:relative;
         }
-        #suggest-wrapper{
-            flex:1;
+        #game-wrapper>p{
+            position:absolute;
+            left:50%;
+            margin-left:-50px;
+            font-size:50px;
         }
         .game-piece{
-            flex:1;
-            border:1px solid;
-            margin-top:auto;
+            border:none;
+            flex:10;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            height:100%;
         }
-        .centered-button{
-            margin-left:auto;
+        #situation-box{
+            background-color:#30127E;
+            margin-right:20px;
+        }
+        #condition-box{
+            background-color:#641281;
         }
         p{
             text-align:center;
-            margin-top:auto;
+            font-family:coffee;
+        }
+        div{
+            font-family:coffee;
+        }
+        #top-info-wrapper{
+            flex:1;
+            display:flex;
+            align-items: center;
+        }
+        #top-info-wrapper img{
+            width:200px;
+        }
+        #top-info-wrapper div{
+            flex:1;
+            color:white;
+            text-align:center;
+            font-family:coffee;
+            color:#00c7d4;
+            -webkit-text-stroke: 2px white;
+            font-size:50px;
+            padding:10px;
+        }
+        #top-info-wrapper h1{
+            flex:1;
+            color:white;
+            text-align:center;
+            font-family:coffee;
+            color:#00c7d4;
+            -webkit-text-stroke: 2px white;
+            font-size:30px;
+        }
+        #player-wrapper{
+            padding-top:20px;
+            width:70%;
+        }
+        #player-list{
+            background-color:#D7D7FF;
+            color:black;
+            height:500px;
+            overflow:scroll;
+            padding:20px;
+            border-radius:20px;
+        }
+        #buttons-wrapper{
+            display:flex;
+            justify-content:space-between;
+            flex-direction:row;
+        }
+        #player-wrapper button{
+            margin-top:10px;
+            background-color:#00c7d4;
+            color:white;
+            width:49%;
+            height:50px;
+            border:none;
+            font-family:coffee;
+            border-radius:3px;
+        }
+        #info-wrapper{
+            display:flex;
+            flex:1;
+            justify-content:space-between;
+            flex-direction:column;
+            align-items:center;
+        }
+        #suggest-wrapper{
+            padding-bottom:30px;
+            width:70%;
+        }
+        #suggest-wrapper input{
+            width:100%;
+            height:40px;
+        }
+        #suggest-wrapper button{
+            margin-top:10px;
+            background-color:#00c7d4;
+            color:white;
+            width:49%;
+            height:50px;
+            border:none;
+            font-family:coffee;
+            border-radius:3px;
+        }
+        #player-list td{
+            padding-left:5px;
+        }
+        #player-list td button{
+            width:100%;
+            height:100%;
+            background-color:red;
+            display: block;
+            margin: auto;
         }
     </style>
 </head>
 <body onload="refreshGame()">
     <div id="wrapper">
         <div id="round-wrapper">
-            <div id="keycode"></div>
-            <button onclick="refreshGame()" class="centered-button" id="refresh_button">NEXT ROUND</button>
-            <button onclick="advanceGame()" class="centered-button" id="advance_button" >ADVANCE ROUND</button>
+            <div id="top-info-wrapper">
+                <h1>ON ONE CONDITION</h1>
+                <div id="keycode"></div>
+                <div><img src="/static/images/LOGO.png" /></div>
+            </div>
+            <div id="game-wrapper">
+                <p>BUT</p>
+                <div class="game-piece" id="situation-box"><p id="situation"></p></div>
+                <div class="game-piece" id="condition-box"><p id="condition"></p></div>
+            </div>
         </div>
-        <div id="game-wrapper">
-            <div class="game-piece" style="margin:20px auto"><p id="situation"></p></div>
-            <div class="game-piece" style="margin:20px auto"><p id="condition" ></p></div>
-        </div>
-        <div id="suggest-wrapper">
-            <div id="player-list"></div>
-            <input type="text" id="newContent" />
-            <button onclick="submitSituation('condition')">Add Condition</button>
-            <button onclick="submitSituation('situation')">Add Situation</button>
+        <div id="info-wrapper">
+            <div id="player-wrapper">
+                <div id="player-list"></div>
+                <div id="buttons-wrapper">
+                    <button onclick="refreshGame()" class="centered-button" id="refresh_button">REFRESH ROUND</button>
+                    <button onclick="advanceGame()" class="centered-button" id="advance_button" >NEXT ROUND</button>
+                </div>
+            </div>
+            <div id="suggest-wrapper">
+                <input type="text" id="newContent" placeholder = "SUGGEST A NEW CONDITION OR SITUATION" />
+                <button onclick="submitSituation('condition')">Add Condition</button>
+                <button onclick="submitSituation('situation')">Add Situation</button>
+            </div>
         </div>
     </div>
 </body>

@@ -11,8 +11,8 @@
                 document.getElementById("name_error").innerHTML = "PLEASE ENTER A NAME";
                 return;
             }
-            if(keycode==null||keycode=="") {
-                document.getElementById("keycodeerror").innerHTML = "PLEASE ENTER A KEYCODE";
+            if(keycode==null||keycode==""||keycode.length!=6) {
+                document.getElementById("keycode_error").innerHTML = "PLEASE ENTER A VALID KEYCODE";
                 return;
             }
             await fetch(window.location.origin+"/join_game", {
@@ -20,11 +20,11 @@
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
                   name: name,
-                  keycode: keycode,
+                  keycode: keycode.toLowerCase(),
               })
             }).then(res => res.json()).then(returned_data=>{
                 if(returned_data.error){
-                    document.getElementById("name_error").innerHTML = returned_data.error;
+                    document.getElementById("keycode_error").innerHTML = "INVALID ROOM KEY";
                     return;
                 }
                 console.log(returned_data)
@@ -58,15 +58,19 @@
     <style>
         @font-face{
             font-family:coffee;
-            src: url("static/fonts/Lets Coffee.ttf");
+            src: url("/static/fonts/Lets Coffee.ttf");
         }
         html{
             width:100%;
             height:100%;
+            margin:0px;
+            padding:0px;
         }
         body{
             width:100%;
             height:100%;
+            margin:0px;
+            padding:0px;
             background-image: linear-gradient(#050037, #4d004e);
         }
         #wrapper{
@@ -77,6 +81,7 @@
             padding:0px;
             flex-direction:column;
             justify-content:space-around;
+            align-items:center;
         }
         h1{
             color:white;
@@ -86,23 +91,59 @@
             -webkit-text-stroke: 2px white;
             font-size:72px;
         }
+        input, button{
+            width:500px;
+            height:50px;
+            background-color:#D7D7FF;
+            border:none;
+            font-family:coffee;
+            border-radius:3px;
+        }
+        button{
+            margin-top:20px;
+            background-color:#00c7d4;
+            color:white;
+        }
+        .form-group{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+        }
+        img{
+            position:absolute;
+            top:10px;
+            left:10px;
+            width:20%;
+        }
+        p{
+            width:50%;
+            color:white;
+            font-family:coffee;
+            text-align:center;
+        }
+        .warning{
+            color:red;
+        }
     </style>
 </head>
 <body>
-
+<img src="/static/images/LOGO.png" />
 <div id="wrapper">
-    <h1>On one condition</h1>
-    <div>
-        <input id="name" name="name" />
-        <div id="name_error"></div>
+    <h1>ON ONE CONDITION</h1>
+    <div class="form-group">
+        <input id="name" name="name" placeholder="USERNAME" />
+        <div id="name_error" class="warning"></div>
         <button onclick="make_game()">HOST GAME</button>
     </div>
-    <div>
-        <input id="keycode" name="keycode" />
-        <div id="keycode_error"></div>
+    <p>Host or join a game to play! If you are selected, role-play the situation and condition on shown. Anyone who can guess the
+    situation or the condition wins a point! </p>
+    <div class="form-group">
+        <input id="keycode" name="keycode" placeholder="ROOM CODE" />
+        <div id="keycode_error" class="warning"></div>
         <button onclick="join_game()">JOIN GAME</button>
     </div>
+    <p>Don't forget to practice your target language, and send hard words you need to look up
+    to the others to prepare them</p>
 </div>
-
 </body>
 </html>

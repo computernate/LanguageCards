@@ -178,5 +178,20 @@ def list_game_elements():
         'conditions':conditions
     }
 
+@app.route('/add_point/<id>', methods=['POST'])
+def add_point(id):
+    conn = create_db_connection()
+    add_point_db(conn, id)
+    return {
+        'success':True,
+    }
+@app.route('/remove_point/<id>', methods=['POST'])
+def remove_point(id):
+    conn = create_db_connection()
+    remove_point_db(conn, id)
+    return {
+        'success':True,
+    }
+
 if __name__ == '__main__':
   app.run()
