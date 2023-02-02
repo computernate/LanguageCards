@@ -89,6 +89,7 @@
         }
 
         async function submitSituation(type){
+            if(document.getElementById('newContent').value==null||document.getElementById('newContent').value=="") return;
             await fetch(window.location.origin+"/new_situation", {
               method: "POST",
               headers: {'Content-Type': 'application/json'},
@@ -234,7 +235,7 @@
             padding:20px;
             border-radius:20px;
         }
-        #buttons-wrapper{
+        #buttons-wrapper, #buttons-wrapper2{
             display:flex;
             justify-content:space-between;
             flex-direction:row;
@@ -284,6 +285,9 @@
             display: block;
             margin: auto;
         }
+        #suggest-wrapper button:hover, #buttons-wrapper button:hover{
+            background-color: #004c52;
+        }
     </style>
 </head>
 <body onload="refreshGame()">
@@ -310,8 +314,10 @@
             </div>
             <div id="suggest-wrapper">
                 <input type="text" id="newContent" placeholder = "SUGGEST A NEW CONDITION OR SITUATION" />
-                <button onclick="submitSituation('condition')">Add Condition</button>
-                <button onclick="submitSituation('situation')">Add Situation</button>
+                <div id="buttons-wrapper2">
+                    <button onclick="submitSituation('condition')">Add Condition</button>
+                    <button onclick="submitSituation('situation')">Add Situation</button>
+                </div>
             </div>
         </div>
     </div>

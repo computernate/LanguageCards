@@ -138,12 +138,9 @@ def remove_point_db(conn, id):
 
 if __name__ == "__main__":
     conn = create_db_connection()
-    execute_query(conn, "ALTER TABLE players ADD points VARCHAR(64)")
-    """
     rows = read_query(conn, "SELECT * FROM games")
     for row in rows:
         print(row)
     rows = read_query(conn, "SELECT * FROM players")
     for row in rows:
         print(row)
-    """
