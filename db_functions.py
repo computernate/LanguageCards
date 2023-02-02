@@ -114,7 +114,12 @@ def game_data(conn, game_id):
     }
 
 def remove_user_db(conn, id):
+    print(F"REMOVING {id}")
     execute_query(conn, F"DELETE FROM players WHERE id={id}")
+    is_host = read_query(conn, F"SELECT id FROM games WHERE host={id}")
+    if len(is_host)!=0:
+        print("HOST")
+        execute_query(conn, F"DELETE FROM games WHERE id={is_host[0][0]}")
 
 def remove_situation_db(conn, id):
     execute_query(conn, F"DELETE FROM situation WHERE id={id}")
@@ -126,4 +131,7 @@ def list_conditions(conn):
     return read_query(conn, "SELECT * FROM game_condition")
 
 if __name__ == "__main__":
-    create_situation_database()
+    conn = create_db_connection()
+    rows = read_query(conn, "SELECT * FROM games")
+    for row in rows:
+        print(row, '\n')

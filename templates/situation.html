@@ -32,12 +32,10 @@
             var myname = gamestate.players.find(obj=>{
                 return obj[0] == user_id
             })
-            console.log(myname)
             if(myname==undefined){
                 window.location=window.location.origin+"/situation_home";
                 return
             }
-            console.log(gamestate.game)
             if(gamestate.game[4]!=user_id){
                 document.getElementById('advance_button').style.visibility='hidden'
             }

@@ -85,6 +85,9 @@ def situation_game(id, user_id):
 def situation_home():
     return render_template('situation_home.html')
 
+@app.route('/sitaution_start')
+def situation_start():
+    return render_template('situation_start.html')
 
 @app.route('/get_situation', methods=['GET'])
 def get_situation():
