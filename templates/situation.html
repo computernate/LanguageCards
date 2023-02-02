@@ -71,12 +71,33 @@
             if(gamestate.game[4]!=user_id){
                 document.getElementById('advance_button').style.visibility='hidden'
                 for(player of gamestate.players){
-                    player_table += "<tr><td>" + player[1] + "</td><td>"+player[3]+"</td></tr>"
+                    var modifier="";
+                    if(player[0]==gamestate.game[4]){
+                        modifier+="(HOST)";
+                    }
+                    if(player[0]==gamestate.game[2]){
+                        modifier+="(Player 1)";
+                    }
+                    if(player[0]==gamestate.game[3]){
+                        modifier+="(Player 2)";
+                    }
+                    player_table += "<tr><td>" + player[1] + "</td><td>"+modifier+"</td>><td>"+player[3]+"</td></tr>"
                 }
             }
             else{
                 for(player of gamestate.players){
+                    var modifier="";
+                    if(player[0]==gamestate.game[4]){
+                        modifier+="(HOST)";
+                    }
+                    if(player[0]==gamestate.game[2]){
+                        modifier+="(Player 1)";
+                    }
+                    if(player[0]==gamestate.game[3]){
+                        modifier+="(Player 2)";
+                    }
                     player_table += "<tr><td>" + player[1] + "</td>";
+                    player_table += "<td>" + modifier + "</td>";
                     player_table += "<td><button onclick='removePoint(" + player[0] + ")'>-</button></td>"
                     player_table += "<td>" + player[3] + "</td>"
                     player_table += "<td><button onclick='addPoint(" + player[0] + ")' style='background-color:green;'>+</button></td>"

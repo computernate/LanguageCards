@@ -102,6 +102,8 @@ def update_game(conn, game):
     new_condition = get_condition_db(conn)[0][1]
     p1 = get_player_db(conn, game)[0][0]
     p2 = get_player_db(conn, game)[0][0]
+    while p1==p2:
+        p2 = get_player_db(conn, game)[0][0]
     execute_query(conn, f"UPDATE games SET current_situation={repr(new_situation)}, current_condition={repr(new_condition)}, p1={repr(p1)}, p2={repr(p2)} WHERE id={game}")
     return 'success'
 
