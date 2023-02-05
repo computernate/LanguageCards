@@ -138,6 +138,11 @@ def add_point_db(conn, id):
 def remove_point_db(conn, id):
     execute_query(conn, F"UPDATE players SET points = points - 1 WHERE id = {id}")
 
+def reshuffle_db(conn, id):
+    new_situation = get_situation_db(conn)[0][1]
+    new_condition = get_condition_db(conn)[0][1]
+    execute_query(conn, f"UPDATE games SET current_situation={repr(new_situation)}, current_condition={repr(new_condition)} WHERE id={id}")
+
 if __name__ == "__main__":
     conn = create_db_connection()
     rows = read_query(conn, "SELECT * FROM games")

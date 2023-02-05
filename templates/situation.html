@@ -50,8 +50,14 @@
             if(gamestate.game[3]==user_id||gamestate.game[2]==user_id){
                 document.getElementById('situation').innerHTML=gamestate.game[5]
                 document.getElementById('condition').innerHTML=gamestate.game[6]
+                document.getElementById('reshuffle_button').style.visibility='visible'
+                document.getElementById('goal').innerHTML="ROLE PLAY";
+                document.getElementById('but_spacer').innerHTML="BUT";
             }
             else{
+                document.getElementById('goal').innerHTML="GUESS THE CONDITION";
+                document.getElementById('but_spacer').innerHTML="";
+                document.getElementById('reshuffle_button').style.visibility='hidden'
                 try {
                     var p1name = gamestate.players.find(obj => {
                         return obj[0] == gamestate.game[2]
@@ -85,6 +91,7 @@
                 }
             }
             else{
+                document.getElementById('advance_button').style.visibility='visible'
                 for(player of gamestate.players){
                     var modifier="";
                     if(player[0]==gamestate.game[4]){
@@ -142,6 +149,15 @@
         }
         async function removePoint(id){
             await fetch(window.location.origin+"/remove_point/"+id, {
+              method: "POST",
+              headers: {'Content-Type': 'application/json'},
+            }).then(res => res.json()).then(returned_data=>{
+                refreshGame();
+            })
+        }
+        async function reshuffle(id){
+            var game_id = window.location.href.split('/')[4];
+            await fetch(window.location.origin+"/reshuffle/"+game_id, {
               method: "POST",
               headers: {'Content-Type': 'application/json'},
             }).then(res => res.json()).then(returned_data=>{
@@ -241,7 +257,7 @@
             text-align:center;
             font-family:coffee;
             color:#00c7d4;
-            -webkit-text-stroke: 2px white;
+            -webkit-text-stroke: 1px white;
             font-size:30px;
         }
         #player-wrapper{
@@ -252,7 +268,6 @@
             background-color:#D7D7FF;
             color:black;
             height:500px;
-            overflow:scroll;
             padding:20px;
             border-radius:20px;
         }
@@ -315,12 +330,12 @@
     <div id="wrapper">
         <div id="round-wrapper">
             <div id="top-info-wrapper">
-                <h1>ON ONE CONDITION</h1>
+                <h1 id="goal">ON ONE CONDITION</h1>
                 <div id="keycode"></div>
                 <div><img src="/static/images/LOGO.png" /></div>
             </div>
             <div id="game-wrapper">
-                <p>BUT</p>
+                <p id="but_spacer">BUT</p>
                 <div class="game-piece" id="situation-box"><p id="situation"></p></div>
                 <div class="game-piece" id="condition-box"><p id="condition"></p></div>
             </div>
@@ -330,9 +345,12 @@
                 <div id="player-list"></div>
                 <div id="buttons-wrapper">
                     <button onclick="refreshGame()" class="centered-button" id="refresh_button">REFRESH ROUND</button>
+                    <button onclick="reshuffle()" class="centered-button" id="reshuffle_button">NEW CONDITION</button>
                     <button onclick="advanceGame()" class="centered-button" id="advance_button" >NEXT ROUND</button>
                 </div>
             </div>
+            <p style="width:70%">If you are selected, role-play the situation and condition on shown. Anyone who can guess the
+            situation or the condition wins a point! </p>
             <div id="suggest-wrapper">
                 <input type="text" id="newContent" placeholder = "SUGGEST A NEW CONDITION OR SITUATION" />
                 <div id="buttons-wrapper2">
