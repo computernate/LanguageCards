@@ -194,5 +194,13 @@ def remove_point(id):
         'success':True,
     }
 
+@app.route('/reshuffle/<id>', methods=['POST'])
+def reshuffle(id):
+    conn=create_db_connection()
+    reshuffle_db(conn, id)
+    return{
+        'success':True
+    }
+
 if __name__ == '__main__':
   app.run()
