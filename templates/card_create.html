@@ -250,10 +250,12 @@ async function runCSV(lang){
     }).then(res => res.json()).then(returned_data=>{
    	    return_string = "<div>"
     	for(var a=0;a<returned_data.length;a++){
-    		return_string += "<p>"+
-    			returned_data[a].e_sentence+'</p><p>'+returned_data[a].translation+"::";
-    		return_string += ""+
-    			returned_data[a].t_sentence+'</p><p>'+returned_data[a].word+'</p><p>'+returned_data[a].pronunciation+";</p>"
+    		// return_string += "<p>"+
+    		// 	returned_data[a].e_sentence+'</p><p>'+returned_data[a].translation+"::";
+    		// return_string += ""+
+    		// 	returned_data[a].t_sentence+'</p><p>'+returned_data[a].word+'</p><p>'+returned_data[a].pronunciation+";</p>"
+            return_string += "<p>"+returned_data[a].translation+"::";
+    		 return_string += ""+'</p><p>'+returned_data[a].word+'</p><p>'+returned_data[a].pronunciation+";</p>"
     	}
     	return_string += "</div>"
         document.getElementById("output").innerHTML=return_string;

@@ -12,8 +12,8 @@ import random
 
 from tokenizers.french_tokenizer import tokenize as french_tokenize
 
-#os.environ['GOOGLE_APPLICATION_CREDENTIALS']="/home/n8ros/Documents/PERSONAL_PROJECT_TRANSLATIONS/google_api_credentials.json"
-os.environ['GOOGLE_APPLICATION_CREDENTIALS']="/var/www/html/LanguageCards/google_api_credentials.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS']="/home/n8ros/Documents/PERSONAL_PROJECT_TRANSLATIONS/google_api_credentials.json"
+#os.environ['GOOGLE_APPLICATION_CREDENTIALS']="/var/www/html/LanguageCards/google_api_credentials.json"
 
 app = Flask(__name__)
 
@@ -24,14 +24,15 @@ def index():
 @app.route('/get_cards', methods=['POST'])
 def get_cards_all():
   try:
-    conn = create_db_connection()
+    #conn = create_db_connection()
+    conn = None
     return_object = []
     return_object += get_cards_fra(request.get_json()['french'], conn)
     return_object += get_cards_esp(request.get_json()['spanish'], conn)
     return_object += get_cards_jap(request.get_json()['japanese'], conn)
     return_object += get_chinese(request.get_json()['chinese'], conn)
     return_object += get_korean_cards(request.get_json()['korean'], conn)
-    conn.close()
+    #conn.close()
     return json.dumps(return_object)
   except Exception as e:
     print(e)
