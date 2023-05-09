@@ -14,22 +14,24 @@ def get_korean_cards(all_words, conn):
     split_word=word.split(',')
     word = split_word[0].strip()
 
-    db_word = get_word("KR", word, conn)
+    #db_word = get_word("KR", word, conn)
+    db_word=None
     if db_word:
-      db_word=db_word[0]
-      translation = db_word[4]
-      if len(split_word)>1: translation = split_word[1]
-      word_object = {
-        "language":"KR",
-        "word":db_word[2],
-        "pronunciation": db_word[3],
-        "translation": translation,
-        "t_sentence": db_word[5],
-        "e_sentence": db_word[6],
-        "level": db_word[7],
-      }
-      return_object.append(word_object)
-      continue
+      pass
+      # db_word=db_word[0]
+      # translation = db_word[4]
+      # if len(split_word)>1: translation = split_word[1]
+      # word_object = {
+      #   "language":"KR",
+      #   "word":db_word[2],
+      #   "pronunciation": db_word[3],
+      #   "translation": translation,
+      #   "t_sentence": db_word[5],
+      #   "e_sentence": db_word[6],
+      #   "level": db_word[7],
+      # }
+      # return_object.append(word_object)
+      # continue
     else:
 
       if len(split_word)==1: trans = translate_client.translate(word, target_language="en-US")['translatedText']
@@ -51,6 +53,6 @@ def get_korean_cards(all_words, conn):
         "e_sentence": e_sentence,
         "level": "",
       }
-      insert_word(conn, word_object)
+      #insert_word(conn, word_object)
       return_object.append(word_object)
   return return_object

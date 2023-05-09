@@ -9,8 +9,11 @@ def tokenize(word):
     translation = translate_client.translate(word, target_language="en-US")['translatedText']
     returnWords = []
 
+    #Check exceptions. This includes countries and stuff
     exception = checkException(word, translation)
     if(exception): return exception
+
+    #Get some initial tags
     trans_data = requests.get("https://www.larousse.fr/dictionnaires/francais/{}".format(word))
     soup = BeautifulSoup(trans_data.text, 'html.parser')
     initialTags = soup.select("#definition h2.AdresseDefinition")
