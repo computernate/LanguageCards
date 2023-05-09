@@ -10,6 +10,7 @@ import os
 from cardcodes.french import get_cards_fra
 import random
 
+from random_functions import five_word_translator
 from tokenizers.french_tokenizer import tokenize as french_tokenize
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS']="/home/n8ros/Documents/PERSONAL_PROJECT_TRANSLATIONS/google_api_credentials.json"
@@ -20,6 +21,19 @@ app = Flask(__name__)
 @app.route('/')
 def index():
   return render_template('card_create.html')
+
+
+@app.route('/five_translations')
+def five_translations():
+  return render_template('five_translations.html')
+@app.route('/get_five_translations', methods=['POST'])
+def get_five_translations():
+  words = request.get_json()['data']
+  print(words)
+  translations = five_word_translator(words)
+  print(translations)
+  return json.dumps(translations)
+
 
 @app.route('/get_cards', methods=['POST'])
 def get_cards_all():
@@ -76,7 +90,7 @@ def playground():
 
 @app.route('/describe')
 def describe_game():
-    return render_template('describe.html', imageNames=json.dumps(os.listdir("/var/www/html/LanguageCards/static/images")))
+    return render_template('describe.html', imageNames=json.dumps(os.listdir("/home/n8ros/Documents/PERSONAL_PROJECT_TRANSLATIONS/static/images")))
 
 @app.route('/situation/<id>/<user_id>')
 def situation_game(id, user_id):
