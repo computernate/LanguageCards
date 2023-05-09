@@ -12,8 +12,9 @@ import random
 
 from random_functions import five_word_translator
 from tokenizers.french_tokenizer import tokenize as french_tokenize
+from tokenizers.spanish_tokenizer import tokenize as spanish_tokenize
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS']="/home/n8ros/Documents/PERSONAL_PROJECT_TRANSLATIONS/google_api_credentials.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS']="D:/nater/Documents/LanguageCards/google_api_credentials.json"
 #os.environ['GOOGLE_APPLICATION_CREDENTIALS']="/var/www/html/LanguageCards/google_api_credentials.json"
 
 app = Flask(__name__)
@@ -83,6 +84,30 @@ def get_french_tokenized():
   except Exception as e:
     print(e)
     return json.dumps({"ERROR:":str(e)})
+
+@app.route('/get_forms/3', methods=['POST'])
+def get_spanish_tokenized():
+  try:
+    returnWords = []
+    words = request.get_json()
+    for word in words:
+      try:
+        returnWords.append(spanish_tokenize(word))
+      except Exception as e:
+        return {
+            returnWords.append([{
+                'BaseForm':"ERROR110",
+                'Forms':[],
+                'Language':-1,
+                'Translations':""
+            }])
+        }
+    print(returnWords)
+    return json.dumps(returnWords)
+  except Exception as e:
+    print(e)
+    return json.dumps({"ERROR:":str(e)})
+
 
 @app.route('/playground')
 def playground():

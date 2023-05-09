@@ -238,6 +238,7 @@ async function runCSV(lang){
 	var spanishData = document.getElementById("inputSpanish").value.split('\n');
 	var japaneseData = document.getElementById("inputJapanese").value.split('\n');
 	var chineseData = document.getElementById("inputMandarin").value.split('\n');
+	var koreanData = document.getElementById("inputKorean").value.split('\n');
     await fetch(base_url+"/get_cards", {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
@@ -245,7 +246,8 @@ async function runCSV(lang){
           french: frenchData,
           spanish: spanishData,
           japanese: japaneseData,
-          chinese: chineseData
+          chinese: chineseData,
+          korean: koreanData
       })
     }).then(res => res.json()).then(returned_data=>{
    	    return_string = "<div>"

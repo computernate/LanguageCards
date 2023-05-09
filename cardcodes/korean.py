@@ -15,8 +15,15 @@ def get_korean_cards(all_words, conn):
     split_word=word.split(',')
     word = split_word[0].strip()
 
+<<<<<<< HEAD
+    #db_word = get_word("KR", word, conn)
+    db_word=None
+    if db_word:
+      pass
+=======
     # db_word = get_word("KR", word, conn)
     # if db_word:
+>>>>>>> 1179d9fd897db931ab526f71024e1e70cf527797
       # db_word=db_word[0]
       # translation = db_word[4]
       # if len(split_word)>1: translation = split_word[1]
@@ -31,6 +38,31 @@ def get_korean_cards(all_words, conn):
       # }
       # return_object.append(word_object)
       # continue
+<<<<<<< HEAD
+    else:
+
+      if len(split_word)==1: trans = translate_client.translate(word, target_language="en-US")['translatedText']
+      else: trans = split_word[1]
+      try:
+        sentence_data = requests.get(f'https://www.ybmallinall.com/styleV2/dicview.asp?kwdseq=0&kwdseq2=0&DictCategory=DictAll&DictNum=0&ById=0&PageSize=5&StartNum=0&GroupMode=0&cmd=0&kwd={word}&x=0&y=0')
+        soup = BeautifulSoup(sentence_data.text, 'html.parser')
+        e_sentence = soup.select_one('div.DictResultEngSnt .Word').string
+        k_sentence = soup.select_one('div.DictResultEngSnt .Example').string
+      except:
+        e_sentence = ""
+        k_sentence = ""
+      word_object = {
+        "language":"KR",
+        "word":word,
+        "pronunciation": "",
+        "translation": trans,
+        "t_sentence": k_sentence,
+        "e_sentence": e_sentence,
+        "level": "",
+      }
+      #insert_word(conn, word_object)
+      return_object.append(word_object)
+=======
     #else:
     #AIzaSyC0EZvy_D6ohl37wHNOR595srrousk0_v0
     if len(split_word)==1: trans = translate_client.translate(word, target_language="en-US")['translatedText']
@@ -54,4 +86,5 @@ def get_korean_cards(all_words, conn):
     }
     #insert_word(conn, word_object)
     return_object.append(word_object)
+>>>>>>> 1179d9fd897db931ab526f71024e1e70cf527797
   return return_object
