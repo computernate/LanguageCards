@@ -26,7 +26,7 @@ def index():
 def get_cards_all():
   try:
     #conn = create_db_connection()
-    conn=None
+    conn = None
     return_object = []
     return_object += get_cards_fra(request.get_json()['french'], conn)
     return_object += get_cards_esp(request.get_json()['spanish'], conn)
