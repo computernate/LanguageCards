@@ -5,48 +5,46 @@
     <title>Title</title>
     <script>
 
-async function get_translations() {
-  var data = document.getElementById("input").value.split(', ');
-  let languages=[
-      'English',
-      "French",
-      "Spanish",
-      "Italian",
-      "German",
-      "Russian",
-      "Arabic",
-      "Mandarin",
-      "Estonian",
-      "Japanese",
-      "Korean"
-  ]
-  await fetch("/get_five_translations", {
-      method: "POST",
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-          data: data,
-      })
-    }).then(res => res.json()).then(returned_data=>{
-      let html="<tr>"
-      for(let language of languages){
-          html+=`<td>${language}</td>`
-      }
-      html+='</tr>'
-      for(let word of returned_data){
-        html+="<tr>"
-          for(let language of languages){
-            html+=`<td>${word[language]}</td>`
-          }
-        html+="</tr>"
-      }
-      document.getElementById('fill-input').innerHTML=html;
-  })
-}
+        async function get_translations() {
+            var data = document.getElementById("input").value.split(', ');
+            let languages = [
+                'English',
+                "French",
+                "Spanish",
+                "Italian",
+                "German",
+                "Russian",
+                "Arabic",
+                "Mandarin",
+                "Estonian",
+                "Japanese",
+                "Korean"
+            ]
+            await fetch("/get_five_translations", {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    data: data,
+                })
+            }).then(res => res.json()).then(returned_data => {
+                let html = "<p>"
+                for (let word of returned_data) {
+                    for (let language of languages) {
+                        html += `${language}:${word[language]},`
+                    }
+                    html = html.slice(0, -1)
+                    html += ";"
+                }
+                html = html.slice(0, -1)
+                html += "</p>"
+                document.getElementById('fill-input').innerHTML = html;
+            })
+        }
     </script>
 </head>
 <body>
-<textarea placeholder = "Enter words separated by a comma" id="input"></textarea>
-<input id="run" type="button" value="TRANSLATE" onclick="get_translations()" />
+<textarea placeholder="Enter words separated by a comma" id="input"></textarea>
+<input id="run" type="button" value="TRANSLATE" onclick="get_translations()"/>
 <table id="fill-input">
 
 </table>
