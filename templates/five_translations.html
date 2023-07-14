@@ -6,7 +6,7 @@
     <script>
 
         async function get_translations() {
-            var data = document.getElementById("input").value.split(', ');
+            var data = document.getElementById("input").value.split(/\n|,/);
             let languages = [
                 'English',
                 "French",

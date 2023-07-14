@@ -177,8 +177,6 @@ def tokenize(word):
                 'Language':2,
                 'Translations': get_french_translations(word_base)
             })
-    print(word)
-    print(returnWords)
     return returnWords
 
 if __name__ == "__main__":
