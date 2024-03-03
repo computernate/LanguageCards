@@ -22,6 +22,7 @@ def create_db_connection():
 
 
 def execute_query(connection, query):
+    return None
     cursor = connection.cursor()
     try:
         cursor.execute(query)
@@ -47,6 +48,7 @@ def create_situation_database():
 
 
 def read_query(connection, query):
+    return None
     cursor = connection.cursor()
     result = None
     try:

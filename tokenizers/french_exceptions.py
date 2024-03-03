@@ -5,8 +5,8 @@ def checkException(word, translation):
         return [
             {
                 "Translations":[{"Language": 1, "Term": translation}],
-                "BaseForm":word,
-                "Forms":[{"Word":word, "Tags":["pays", "nom"]}],
+                "Base":word,
+                "Inflections":[{"Word":word, "Tags":["pays", "nom"]}],
                 "Language":2
             }
         ]
@@ -14,8 +14,8 @@ def checkException(word, translation):
         return [
             {
                 "Translations":[{"Language": 1, "Term": "the"}],
-                "BaseForm":"la",
-                "Forms":[{"Word":"la", "Tags":["article-défini", "feminine"]}],
+                "Base":"la",
+                "Inflections":[{"Word":"la", "Tags":["article-défini", "feminine"]}],
                 "Language":2
             }
         ]
@@ -23,8 +23,8 @@ def checkException(word, translation):
         return [
             {
                 "Translations":[{"Language": 1, "Term": "the"}],
-                "BaseForm":"le",
-                "Forms":[{"Word":"le", "Tags":["article-défini", "masculine"]}],
+                "Base":"le",
+                "Inflections":[{"Word":"le", "Tags":["article-défini", "masculine"]}],
                 "Language":2
             }
         ]
@@ -32,8 +32,8 @@ def checkException(word, translation):
         return [
             {
                 "Translations":[{"Language": 1, "Term": "the"}],
-                "BaseForm":"les",
-                "Forms":[{"Word":"les", "Tags":["article-défini", "plural"]}],
+                "Base":"les",
+                "Inflections":[{"Word":"les", "Tags":["article-défini", "plural"]}],
                 "Language":2
             }
         ]
@@ -41,8 +41,8 @@ def checkException(word, translation):
         return [
             {
                 "Translations":[{"Language": 1, "Term": "the"}],
-                "BaseForm":"l",
-                "Forms":[{"Word":"l", "Tags":["article-défini"]}],
+                "Base":"l",
+                "Inflections":[{"Word":"l", "Tags":["article-défini"]}],
                 "Language":2
             }
         ]
@@ -50,8 +50,8 @@ def checkException(word, translation):
         return [
             {
                 "Translations":[{"Language": 1, "Term": "the"}],
-                "BaseForm":"d",
-                "Forms":[{"Word":"d", "Tags":["article"]}],
+                "Base":"d",
+                "Inflections":[{"Word":"d", "Tags":["article"]}],
                 "Language":2
             }
         ]

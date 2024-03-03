@@ -5,6 +5,8 @@ from cardcodes.japanese import get_cards_jap
 from cardcodes.korean import get_korean_cards
 from cardcodes.mandarin import get_chinese
 from cardcodes.spanish import get_cards_esp
+from cardcodes.portuguese import get_cards_por
+from cardcodes.vietnamese import get_cards_vn
 from db_functions import *
 import os
 from cardcodes.french import get_cards_fra
@@ -48,6 +50,8 @@ def get_cards_all():
     return_object += get_cards_jap(request.get_json()['japanese'], conn)
     return_object += get_chinese(request.get_json()['chinese'], conn)
     return_object += get_korean_cards(request.get_json()['korean'], conn)
+    return_object += get_cards_por(request.get_json()['portuguese'], conn)
+    return_object += get_cards_vn(request.get_json()['vietnamese'], conn)
     #conn.close()
     return json.dumps(return_object)
   except Exception as e:
@@ -72,14 +76,8 @@ def get_french_tokenized():
       try:
         returnWords.append(french_tokenize(word))
       except Exception as e:
-        return json.dumps({
-            returnWords.append([{
-                'BaseForm':"ERROR110",
-                'Forms':[],
-                'Language':-1,
-                'Translations':f"{e}"
-            }])
-        })
+        print(e)
+        return json.dumps({"ERROR:":str(e)})
     print(returnWords)
     return json.dumps(returnWords)
   except Exception as e:

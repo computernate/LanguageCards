@@ -25,12 +25,12 @@ def tokenize(word):
         # if the word is already in the list.
         already_used = [
             index for index in range(len(returnWords))
-            if returnWords[index]['BaseForm']==word_base
+            if returnWords[index]['Base']==word_base
         ]
         if already_used:
-            for i in range(len(returnWords[already_used[0]]['Forms'])):
-                all_tags = returnWords[already_used[0]]['Forms'][i]['Tags'] + [x for x in first_tags.split(' ') if x]
-                returnWords[already_used[0]]['Forms'][i]['Tags'] = list(set(all_tags))
+            for i in range(len(returnWords[already_used[0]]['Inflections'])):
+                all_tags = returnWords[already_used[0]]['Inflections'][i]['Tags'] + [x for x in first_tags.split(' ') if x]
+                returnWords[already_used[0]]['Inflections'][i]['Tags'] = list(set(all_tags))
             continue
 
 
@@ -113,8 +113,8 @@ def tokenize(word):
                 })
 
             returnWords.append({
-                'BaseForm':word_base,
-                'Forms':forms,
+                'Base':word_base,
+                'Inflections':forms,
                 'Language':2,
                 'Translations': get_french_translations(word_base)
             })
@@ -134,15 +134,15 @@ def tokenize(word):
             if(feminine and len(feminine.contents)>2): forms.append({'Word': feminine.contents[2], 'Tags': ['Féminin', 'Plural', 'Féminin-Plural', 'Adjective']})
             if(adverb  and len(adverb.contents)>0): forms.append({'Word': adverb.contents[0], 'Tags': ['Adverbe']})
             returnWords.append({
-                'BaseForm':word_base,
-                'Forms':forms,
+                'Base':word_base,
+                'Inflections':forms,
                 'Language':2,
                 'Translations': get_french_translations(word_base)
             })
         elif 'pronom personnel' in first_tags:
             returnWords.append({
-                'BaseForm':word_base,
-                'Forms':[
+                'Base':word_base,
+                'Inflections':[
                     {'Word': word_base, 'Tags': ['prenom-personnel']}
                 ],
                 'Language':2,
@@ -163,15 +163,15 @@ def tokenize(word):
             ]
             forms = [form for form in forms if form['Word']!='/']
             returnWords.append({
-                'BaseForm':word_base,
-                'Forms':forms,
+                'Base':word_base,
+                'Inflections':forms,
                 'Language':2,
                 'Translations': get_french_translations(word_base)
             })
         else:
             returnWords.append({
-                'BaseForm':word_base,
-                'Forms':[
+                'Base':word_base,
+                'Inflections':[
                     {'Word': word_base, 'Tags': [x for x in first_tags.split(' ') if x]}
                 ],
                 'Language':2,

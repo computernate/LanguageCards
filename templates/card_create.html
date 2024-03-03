@@ -112,13 +112,17 @@
                 <td onclick="changeInput('Japanese')" id="headJapanese">Japanese</td>
                 <td onclick="changeInput('Mandarin')" id="headMandarin">Mandarin</td>
                 <td onclick="changeInput('Korean')" id="headKorean">Korean</td>
+                <td onclick="changeInput('Portuguese')" id="headPortuguese">Portuguese</td>
+                <td onclick="changeInput('Vietnamese')" id="headVietnamese">Vietnamese</td>
             </tr>
         </table>
         <textarea placeholder = "French" id="inputFrench"></textarea>
         <textarea placeholder = "Spanish" id="inputSpanish"></textarea>
         <textarea placeholder = "Japanese" id="inputJapanese"></textarea>
-        <textarea placeholder = "Mandarin" id="inputMandarin"></textarea>
+        <textarea placeholder = "Mandarin" id="inputMandarin" rows="24"></textarea>
         <textarea placeholder = "Korean" id="inputKorean"></textarea>
+        <textarea placeholder = "Portuguese" id="inputPortuguese"></textarea>
+        <textarea placeholder = "Vietnamese" id="inputVietnamese"></textarea>
 		<div id='count'></div>
         <table id="buttons">
             <td><input id="run" type="button" value="Cards" onclick="run()" /></td>
@@ -137,7 +141,7 @@ const buttons = '<td><input id="run" type="button" value="Cards" onclick="run()"
 const base_url = window.location.origin
 
 function changeInput(lang){
-    var languages = ['French', 'Spanish', 'Japanese', 'Mandarin', 'Korean'];
+    var languages = ['French', 'Spanish', 'Japanese', 'Mandarin', 'Korean', 'Portuguese', 'Vietnamese'];
     for(l in languages){
         document.getElementById('input'+languages[l]).style.display = "none";
         document.getElementById('head'+languages[l]).style.backgroundColor = "White";
@@ -156,6 +160,8 @@ async function run(lang){
 	var japaneseData = document.getElementById("inputJapanese").value.split('\n');
 	var chineseData = document.getElementById("inputMandarin").value.split('\n');
 	var koreanData = document.getElementById("inputKorean").value.split('\n');
+	var portugueseData = document.getElementById("inputPortuguese").value.split('\n');
+	var vietnameseData = document.getElementById("inputVietnamese").value.split('\n');
     await fetch(base_url+"/get_cards", {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
@@ -164,7 +170,9 @@ async function run(lang){
           spanish: spanishData,
           japanese: japaneseData,
           chinese: chineseData,
-          korean: koreanData
+          korean: koreanData,
+          portuguese: portugueseData,
+          vietnamese: vietnameseData
       })
     }).then(res => res.json()).then(returned_data=>{
         console.log(returned_data);
